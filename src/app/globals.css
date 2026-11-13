@@ -336,7 +336,7 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Background poster (static fallback; the starfield mounts later)      */
+/* Background: static poster + live starfield layer                    */
 /* ------------------------------------------------------------------ */
 .bg-root {
   position: fixed;
@@ -377,12 +377,189 @@
   );
   background-size: 24px 24px;
 }
+/*
+ * Live tiers (Canvas 2D / WebGL) mount above the poster and fade in over 600ms
+ * once their first frame is drawn. The poster stays underneath; only its static
+ * star pattern steps aside so it does not double up with the moving stars.
+ */
+.bg-live,
+.bg-live-layer {
+  position: absolute;
+  inset: 0;
+}
+.bg-live-layer {
+  opacity: 0;
+  transition: opacity 600ms ease-out;
+}
+.bg-live-layer[data-on] {
+  opacity: 1;
+}
+.bg-poster-stars {
+  transition: opacity 600ms ease-out;
+}
+.bg-root:has(.bg-live-layer[data-on]) .bg-poster-stars {
+  opacity: 0;
+}
+/* Readability: dark radial vignette under the (left-aligned) text column. */
+.bg-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse min(680px, 75vw) 70% at max(38%, calc(50% - 192px)) 50%,
+    rgb(7 10 18 / 0.6),
+    transparent
+  );
+}
 .light .bg-poster-gradients,
 .light .bg-poster-stars {
   display: none;
 }
 .light .bg-poster-grid {
   display: block;
+}
+
+/* ------------------------------------------------------------------ */
+/* Scroll storytelling (enhancement layer; final state is the default)  */
+/* ------------------------------------------------------------------ */
+
+/* Lenis smooth scroll (desktop only; see HomeFx.tsx). */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/*
+ * Act 0 — hero entrance, CSS only. Mask reveal: the clip edge stays put while
+ * the line rises into it (500ms, 80ms stagger via --i); chips fade (40ms
+ * stagger). `backwards` fill: nothing is clipped once the animation ends, and
+ * without animation support the content is simply there. The name starts
+ * half-revealed and never transparent, so it is painted on the first frame
+ * (LCP). Disabled by reduced motion and by <html data-fx="off">.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  [data-hero-line] {
+    animation: hero-line 500ms var(--ease-out) backwards;
+    animation-delay: calc(var(--i, 0) * 80ms);
+  }
+  h1[data-hero-line] {
+    animation-name: hero-name;
+  }
+  [data-hero-chip] {
+    animation: hero-chip 320ms ease-out backwards;
+    animation-delay: calc(400ms + var(--i, 0) * 40ms);
+  }
+  [data-scroll-hint] {
+    animation: hero-chip 400ms ease-out 900ms backwards;
+  }
+  [data-scroll-hint] svg {
+    animation: hint-bob 1.8s ease-in-out 1.4s infinite;
+  }
+}
+@keyframes hero-line {
+  from {
+    clip-path: inset(0 -4% 100% -4%);
+    transform: translateY(100%);
+  }
+  to {
+    clip-path: inset(-20% -4% -20% -4%);
+    transform: translateY(0);
+  }
+}
+@keyframes hero-name {
+  from {
+    clip-path: inset(0 -4% 45% -4%);
+    transform: translateY(45%);
+  }
+  to {
+    clip-path: inset(-20% -4% -20% -4%);
+    transform: translateY(0);
+  }
+}
+@keyframes hero-chip {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes hint-bob {
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+/* Act 1 — phrases: --lit 0 (muted) → 1 (text), scrubbed by ScrollTrigger. */
+[data-phrase] {
+  color: color-mix(in srgb, var(--text) calc(var(--lit, 1) * 100%), var(--muted));
+}
+
+/* Act 2 — constellations: stars light muted → accent; chip ↔ star highlight. */
+[data-star] {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    transform 200ms var(--ease-out),
+    filter 200ms ease-out;
+}
+[data-star] circle {
+  fill: color-mix(in srgb, var(--accent) calc(var(--lit, 1) * 100%), var(--muted));
+}
+[data-star][data-active] {
+  transform: scale(1.5);
+  filter: drop-shadow(0 0 3px var(--accent));
+}
+[data-star-chip] {
+  transition:
+    color 180ms ease-out,
+    border-color 180ms ease-out,
+    box-shadow 180ms ease-out;
+}
+[data-star-chip][data-active] {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+/* Act 3 — star trail. `.is-fx` is added by HomeFx once ScrollTrigger is running. */
+.is-fx [data-timeline-node],
+.is-fx [data-timeline-node] > span {
+  transition:
+    background-color 300ms ease-out,
+    box-shadow 300ms ease-out;
+}
+.is-fx [data-timeline-node]:not([data-lit]) {
+  background-color: color-mix(in srgb, var(--muted) 20%, transparent);
+}
+.is-fx [data-timeline-node]:not([data-lit]) > span {
+  background-color: var(--muted);
+}
+.is-fx [data-timeline-node][data-lit] {
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+.is-fx [data-timeline-item] > :not([data-timeline-node]) {
+  transition:
+    opacity 400ms var(--ease-out),
+    transform 400ms var(--ease-out);
+}
+.is-fx [data-timeline-item]:not([data-shown]) > :not([data-timeline-node]) {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+/* Act 5 — magnetic button: HomeFx sets `translate` (≤6px), CSS eases it. */
+[data-magnetic] {
+  transition:
+    color 180ms ease-out,
+    background-color 180ms ease-out,
+    transform 200ms var(--ease-out),
+    translate 200ms var(--ease-out);
 }
 
 /* ------------------------------------------------------------------ */

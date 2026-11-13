@@ -5,7 +5,7 @@ import type { Locale } from "@/i18n/routing";
 import { Act, ActHeading } from "./Act";
 
 /**
- * Act 1. The paragraph is split into phrases (`data-phrase`) so a later phase
+ * Act 1. The paragraph is split into phrases (`data-phrase`) so HomeFx
  * can light them up from muted to text colour on scroll. Static = fully lit.
  */
 export async function WhoIAm({ locale }: { locale: Locale }) {

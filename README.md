@@ -3,15 +3,18 @@
 Bilingual (中文 / English) personal site for recruiters and headhunters.
 All copy comes from the approved site copy; nothing on the site is invented.
 
-> **Status: phase 1** — scaffold, i18n, design tokens, layout, all pages with
-> real text, SEO. The starfield, scroll animations and the interactive lab demos
-> come in later phases; their slots are already in place (see
-> [Slots for later phases](#slots-for-later-phases)).
+> **Status: phase 2** — phase 1 (scaffold, i18n, design tokens, layout, pages,
+> SEO) plus the starry-sky background and the homepage scroll storytelling.
+> The interactive lab demos come in a later phase; their slots are in place
+> (see [Hooks](#hooks)).
 
 ## Stack
 
 - **Next.js 16** (App Router, Turbopack) + **TypeScript** + **Tailwind CSS v4**
 - **next-intl** — locales `zh` (default) and `en`, always-prefixed URLs
+- **three + @react-three/fiber** (WebGL starfield), **GSAP ScrollTrigger**,
+  **Lenis**, **Motion** — all loaded with dynamic `import()` after window load
+  + idle; none of them is in the first-load JS
 - Fonts via `next/font/google`: Noto Sans SC (400/500/700), Geist, Geist Mono, Syne
 - Fully statically generated (`generateStaticParams` + `setRequestLocale`)
 
@@ -74,18 +77,63 @@ The content schema lives in `src/content/schema.ts`; add entries to
   mirrored as `<html data-fx="off">`. Read it in client components with
   `useFx()` from `src/components/fx/FxProvider.tsx`.
 
-## Slots for later phases
+## Background (starry sky)
 
-| Hook                                                        | Where                                 | For                               |
+`<Background />` server-renders the static poster (CSS gradients + an inline-SVG
+star tile; a dot grid in light mode). `<BackgroundLive />` then picks a tier on
+the client and fades it in above the poster over 600ms — the poster always
+stays underneath, so there is never a black block.
+
+| Tier     | When                                                                                         | What                                                                 |
+| -------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `poster` | SSR default; reduced motion, effects off, `saveData`, light theme, every page except home    | Static, no JS                                                        |
+| `lite`   | <768px, or no fine pointer, or no WebGL, or `hardwareConcurrency ≤ 4`                        | Canvas 2D: 150 stars / 2 layers, scroll parallax, 30fps              |
+| `webgl`  | Desktop otherwise                                                                            | R3F: 3 `Points` layers, fbm nebula, meteors, dpr ≤ 1.5, ~30fps       |
+
+The tier is re-evaluated when the effects toggle, the theme or a media query
+changes (`data-tier` on `[data-starfield-slot]` shows the current one). Live
+tiers are imported only after `load` + `requestIdleCallback`
+(`src/lib/after-load.ts`). The scene itself is plain three.js in
+`src/components/background/sky-scene.ts`; `StarfieldWebGL.tsx` is the R3F
+canvas with `frameloop="demand"` and a throttled invalidate loop that stops
+while the tab is hidden.
+
+Scroll linkage goes through `src/lib/sky-store.ts` (a plain mutable object,
+written by ScrollTrigger, read once per frame): `push` (act 1, camera z
+0 → -40, near stars stretch ≤1.5x), `dim` (act 4, brightness 40%, nebula and
+meteors paused), `gather` (act 5, stars drift toward `[data-contact-target]`).
+
+## Scroll storytelling
+
+`src/components/home/HomeFx.tsx` (client, renders nothing) enhances the
+server-rendered acts. The SSR HTML is the final state; with reduced motion or
+effects off nothing runs.
+
+| Act | Effect                                                                                          | Tech                          |
+| --- | ----------------------------------------------------------------------------------------------- | ----------------------------- |
+| 0   | Mask-reveal lines (500ms / 80ms stagger), chips fade (40ms stagger)                             | CSS only (`globals.css`)      |
+| 1   | Phrases light up muted → text (`--lit`), camera push                                            | ScrollTrigger scrub           |
+| 2   | Constellation lines draw (600ms), stars light accent; chip ↔ star hover highlight               | Motion `inView` + `animate`   |
+| 3   | Star-trail line `scaleY` scrub, nodes light when reached, entries fade + rise 16px              | ScrollTrigger + CSS           |
+| 4   | Stars dim                                                                                       | ScrollTrigger → sky store     |
+| 5   | Stars gather; magnetic primary button (≤6px)                                                    | ScrollTrigger, pointer events |
+
+Lenis smooth scrolling runs on the homepage for desktop fine pointers only and
+is driven by the GSAP ticker. The act 2 draw-in and the magnetic button are
+desktop-only as well; on touch devices constellations are simply drawn.
+
+## Hooks
+
+| Hook                                                        | Where                                 | Used by                           |
 | ----------------------------------------------------------- | ------------------------------------- | --------------------------------- |
-| `[data-starfield-slot]` inside `<Background />`             | `src/components/background`           | WebGL / Canvas-2D starfield       |
+| `[data-starfield-slot]` (`data-tier`) inside `<Background />` | `src/components/background`         | Canvas-2D / WebGL starfield       |
 | `#act-0 … #act-5` with `data-act="act-N"`, `data-act-name`  | `src/components/home/Act.tsx`         | ScrollTrigger scenes              |
-| `[data-hero-line]`, `[data-hero-chip]`, `[data-scroll-hint]` | `Hero.tsx`                            | Hero entrance                     |
+| `[data-hero-line]`, `[data-hero-chip]`, `[data-scroll-hint]` | `Hero.tsx`                            | Hero entrance (CSS)               |
 | `[data-phrase]`                                             | `WhoIAm.tsx`                          | Phrase light-up on scroll         |
 | `[data-constellation-line]`, `[data-star]`, `[data-star-chip]` | `Constellation.tsx`, `Skills.tsx`  | Constellation draw + hover        |
 | `[data-timeline-line]`, `[data-timeline-node]`, `[data-timeline-item]` | `Experience.tsx`           | Star-trail timeline               |
 | `[data-magnetic]`, `[data-contact-target]`                  | `ContactAct.tsx`                      | Magnetic button, star gathering   |
-| `[data-demo-slot="low-light" \| "kernel" \| "pathfinding"]` | `src/app/[locale]/lab/page.tsx`       | Sandpack demos                    |
+| `[data-demo-slot="low-light" \| "kernel" \| "pathfinding"]` | `src/app/[locale]/lab/page.tsx`       | Sandpack demos (later phase)      |
 
 Everything is visible and complete without these enhancements.
 
@@ -129,18 +177,20 @@ src/
   global.d.ts              next-intl type augmentation
   config/                  flags.ts, site.ts (URL, email, nav items, storage keys)
   i18n/                    routing.ts, navigation.ts, request.ts, locale-cookie.ts
-  lib/                     seo.ts, locale.ts, prefs.ts (theme/fx stores), no-flash.ts, messages.ts
+  lib/                     seo.ts, locale.ts, prefs.ts (theme/fx stores), no-flash.ts, messages.ts,
+                           capability.ts (device tier), after-load.ts, sky-store.ts (scroll → starfield)
   content/                 schema.ts, projects.ts, blog.ts
   components/
-    background/            Background.tsx (static poster + starfield slot), poster-stars.ts
+    background/            Background.tsx (poster), BackgroundLive.tsx (tier selection),
+                           StarfieldLite.tsx (Canvas 2D), StarfieldWebGL.tsx + sky-scene.ts (R3F / three)
     fx/                    FxProvider.tsx (useFx)
     layout/                Header.tsx, header-controls.tsx, Footer.tsx, PageShell.tsx
     home/                  Act, Hero, WhoIAm, Skills, Constellation, Experience,
-                           LabPreview, ContactAct, ProjectsSection
+                           LabPreview, ContactAct, ProjectsSection, HomeFx (scroll choreography)
     seo/                   PersonJsonLd.tsx
     ui/                    CopyEmailButton.tsx, Terminal404.tsx, icons.tsx
   app/
-    globals.css            tokens, type scale, components, background poster
+    globals.css            tokens, type scale, components, background, act animations
     fonts.ts               next/font definitions
     global-not-found.tsx   bilingual 404 outside /[locale]
     sitemap.ts, robots.ts

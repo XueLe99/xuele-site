@@ -1,7 +1,7 @@
 /**
  * Static SVG constellation: one star per skill item, joined by a single path.
  *
- * Hooks for the later animation phase:
+ * Hooks used by HomeFx.tsx:
  * - `[data-constellation-line]` has pathLength=1 → stroke-dashoffset draw-in
  * - `[data-star="<i>"]` pairs with the chip `[data-star-chip="<i>"]` in the same card
  */

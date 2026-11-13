@@ -25,7 +25,7 @@ export default function GlobalNotFound() {
         <script dangerouslySetInnerHTML={{ __html: noFlashScript }} />
       </head>
       <body className="flex min-h-svh flex-col">
-        <Background />
+        <Background live={false} />
         <main className="container-site flex flex-1 flex-col items-center justify-center gap-6 py-16">
           <Terminal404
             lang="zh-CN"

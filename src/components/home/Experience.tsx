@@ -6,7 +6,7 @@ import { Act, ActHeading } from "./Act";
 /**
  * Act 3. Reverse-chronological timeline ("star trail").
  * `[data-timeline-line]` (scaleY scrub) and `[data-timeline-node]` (light up)
- * are animated in a later phase; statically everything is drawn and lit.
+ * are animated by HomeFx.tsx; statically everything is drawn and lit.
  */
 export async function Experience({ locale }: { locale: Locale }) {
   const t = await getTranslations({ locale, namespace: "experience" });

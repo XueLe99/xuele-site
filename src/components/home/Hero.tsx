@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { getTranslations } from "next-intl/server";
 import { EMAIL, RESUME } from "@/config";
 import { CopyEmailButton } from "@/components/ui/CopyEmailButton";
@@ -5,7 +6,14 @@ import { ArrowDownIcon, DownloadIcon } from "@/components/ui/icons";
 import type { Locale } from "@/i18n/routing";
 import { Act } from "./Act";
 
-/** Act 0. Fully static HTML; the name heading is the LCP element. */
+/** Stagger index for the CSS-only entrance (globals.css, "Act 0"). */
+const order = (i: number) => ({ "--i": i }) as CSSProperties;
+
+/**
+ * Act 0. Fully static HTML; the name heading is the LCP element.
+ * The entrance is pure CSS (`@keyframes hero-line` / `hero-chip`): no JS, no
+ * hidden SSR state, and the name is partly painted from the very first frame.
+ */
 export async function Hero({ locale }: { locale: Locale }) {
   const t = await getTranslations({ locale, namespace: "hero" });
   const c = await getTranslations({ locale, namespace: "common" });
@@ -22,12 +30,14 @@ export async function Hero({ locale }: { locale: Locale }) {
         <h1
           id="hero-name"
           data-hero-line
+          style={order(0)}
           className={`t-display ${en ? "font-display" : ""}`}
         >
           {t("name")}
         </h1>
         <p
           data-hero-line
+          style={order(1)}
           lang={en ? "zh-CN" : "en"}
           className={
             en
@@ -38,19 +48,19 @@ export async function Hero({ locale }: { locale: Locale }) {
           {t("altName")}
         </p>
 
-        <p data-hero-line className="t-h3 mt-8 text-primary md:t-h2">
+        <p data-hero-line style={order(2)} className="t-h3 mt-8 text-primary md:t-h2">
           {t("headline")}
         </p>
-        <p data-hero-line className="mt-2 font-mono text-sm text-muted">
+        <p data-hero-line style={order(3)} className="mt-2 font-mono text-sm text-muted">
           {t("identity")}
         </p>
-        <p data-hero-line className="t-body prose-measure mt-6 text-muted">
+        <p data-hero-line style={order(4)} className="t-body prose-measure mt-6 text-muted">
           {t("tagline")}
         </p>
 
         <ul aria-label={t("chipsLabel")} className="mt-8 flex flex-wrap gap-2">
-          {chips.map((chip) => (
-            <li key={chip} data-hero-chip className="chip">
+          {chips.map((chip, i) => (
+            <li key={chip} data-hero-chip style={order(i)} className="chip">
               {chip}
             </li>
           ))}
