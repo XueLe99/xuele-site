@@ -1,0 +1,251 @@
+{
+  "meta": {
+    "siteName": "陈学礼 · Westly Tan Xue Le",
+    "homeTitle": "陈学礼 Westly Tan Xue Le — IT 经理 | 计算机科学 × 考古学",
+    "description": "用代码理解现在，用考古理解过去——连接科技与文化遗产的 IT 经理。目前在 Stayrene 担任 IT 经理，常驻马来西亚新山。",
+    "aboutTitle": "关于",
+    "aboutDescription": "陈学礼（Westly Tan Xue Le）：计算机科学学士与硕士、考古学学术型硕士，现任 Stayrene IT 经理。",
+    "labTitle": "能力演示",
+    "labDescription": "在“科技 × 文化遗产”交叉领域的探索与小实验——图像增强、计算机视觉与寻路算法演示。",
+    "contactTitle": "联系",
+    "contactDescription": "欢迎招聘方与猎头联系，探讨 IT 管理、技术开发或科技与文化遗产相关的机会。",
+    "blogTitle": "博客",
+    "blogDescription": "陈学礼的文章与笔记。",
+    "projectsTitle": "项目",
+    "projectsDescription": "陈学礼的项目。"
+  },
+  "nav": {
+    "home": "首页",
+    "about": "关于",
+    "lab": "能力演示",
+    "contact": "联系",
+    "blog": "博客",
+    "projects": "项目",
+    "resume": "简历",
+    "skip": "跳到正文",
+    "main": "主导航",
+    "menu": "菜单",
+    "language": "语言",
+    "switchToZh": "切换到中文",
+    "switchToEn": "Switch to English",
+    "themeToLight": "切换到浅色模式",
+    "themeToDark": "切换到深色模式",
+    "fxOff": "关闭特效",
+    "fxOffHint": "关闭背景与动画特效",
+    "logo": "陈学礼",
+    "logoLabel": "陈学礼 — 回到首页"
+  },
+  "common": {
+    "downloadResume": "下载简历",
+    "copyEmail": "复制邮箱",
+    "copied": "已复制",
+    "sendEmail": "发送邮件",
+    "resumeZh": "中文简历（PDF）",
+    "resumeEn": "英文简历（PDF）",
+    "present": "至今"
+  },
+  "hero": {
+    "name": "陈学礼",
+    "altName": "Westly Tan Xue Le",
+    "headline": "IT 经理 | 计算机科学 × 考古学 | 科技 × 文化遗产",
+    "identity": "IT 经理 · Stayrene · 马来西亚新山",
+    "tagline": "用代码理解现在，用考古理解过去——连接科技与文化遗产的 IT 经理。",
+    "chipsLabel": "技能标签",
+    "chips": [
+      "Python",
+      "Java",
+      "面向对象编程",
+      "计算机视觉",
+      "图像增强",
+      "企业内部系统",
+      "IT 管理",
+      "数字博物馆"
+    ],
+    "scrollHint": "向下滚动"
+  },
+  "who": {
+    "eyebrow": "01 / who",
+    "title": "关于我",
+    "phrases": [
+      "我拥有计算机科学学士与硕士学位，",
+      "以及考古学学术型硕士学位，",
+      "这一少见的组合让我能够同时站在技术与人文的两端思考问题。",
+      "目前我在 Stayrene 担任 IT 经理，",
+      "此前曾参与台湾国家级项目中的计算机视觉算法开发，",
+      "并为河南博物院数字博物馆提供方向与技术支持。"
+    ],
+    "more": "了解更多"
+  },
+  "skills": {
+    "eyebrow": "02 / skills",
+    "title": "技能",
+    "constellationLabel": "{name}星座图",
+    "groups": [
+      {
+        "id": "programming",
+        "name": "编程",
+        "summary": "Python、Java 及其他面向对象语言",
+        "items": ["Python", "Java", "面向对象语言"]
+      },
+      {
+        "id": "vision",
+        "name": "计算机视觉",
+        "summary": "图像处理、灰度处理、低照度/夜视图像增强（灰度转换、直方图均衡化/CLAHE、伽马校正、去噪）",
+        "items": [
+          "图像处理",
+          "灰度处理",
+          "低照度/夜视图像增强",
+          "灰度转换",
+          "直方图均衡化/CLAHE",
+          "伽马校正",
+          "去噪"
+        ]
+      },
+      {
+        "id": "tools",
+        "name": "工具",
+        "summary": "OpenCV、NumPy",
+        "items": ["OpenCV", "NumPy"]
+      },
+      {
+        "id": "systems",
+        "name": "系统与管理",
+        "summary": "企业内部业务系统建设、IT 团队管理（带领 2 人团队）",
+        "items": ["企业内部业务系统建设", "IT 团队管理（带领 2 人团队）"]
+      },
+      {
+        "id": "interdisciplinary",
+        "name": "跨学科",
+        "summary": "考古学研究、数字博物馆、文化遗产数字化",
+        "items": ["考古学研究", "数字博物馆", "文化遗产数字化"]
+      }
+    ]
+  },
+  "experience": {
+    "eyebrow": "03 / experience",
+    "title": "经历",
+    "workTitle": "工作经历",
+    "educationTitle": "教育背景",
+    "items": [
+      {
+        "id": "it-manager",
+        "kind": "work",
+        "date": "2026 – 至今",
+        "role": "IT 经理",
+        "org": "Stayrene",
+        "body": "由 IT 负责人晋升，带领 2 人团队，负责公司 IT 工作与内部业务系统。"
+      },
+      {
+        "id": "it-lead",
+        "kind": "work",
+        "date": "2025",
+        "role": "IT 负责人",
+        "org": "Stayrene",
+        "body": "负责清洁管理、财务、UMS/PMS、业主门户、工单等内部系统建设。"
+      },
+      {
+        "id": "archaeology",
+        "kind": "education",
+        "date": "2021 – 2024",
+        "role": "考古学学术型硕士",
+        "org": "郑州大学",
+        "body": "2024 年于河南博物院实习，为数字博物馆提供方向与技术支持。"
+      },
+      {
+        "id": "computer-science",
+        "kind": "education",
+        "date": "2015 – 2020",
+        "role": "计算机科学学士、硕士",
+        "org": "台湾圣约翰大学",
+        "body": "参与国家级项目与早期 AI 开发，负责计算机视觉算法（如灰度处理增强夜视效果）。"
+      }
+    ]
+  },
+  "lab": {
+    "eyebrow": "04 / lab",
+    "title": "实验室",
+    "intro": "这里记录我在“科技 × 文化遗产”交叉领域的探索与小实验——从图像增强、计算机视觉，到数字博物馆与文物数字化的思考。内容持续更新中。",
+    "open": "打开演示",
+    "viewAll": "查看全部演示",
+    "placeholder": "交互演示将在后续版本加入。",
+    "placeholderLabel": "演示占位",
+    "explainTitle": "说明",
+    "demos": [
+      {
+        "id": "low-light",
+        "file": "low-light.ts",
+        "title": "低照度图像增强",
+        "summary": "灰度转换、直方图均衡化、CLAHE 与伽马校正，处理前后并排对比，并显示直方图。",
+        "explain": "这个演示对应我在夜视图像增强方面的计算机视觉工作。它在浏览器里用 Canvas 读取像素，对一张由程序生成的暗光测试图（或你上传的图片）进行灰度转换、直方图均衡化、分块限幅的简化版 CLAHE 与伽马校正，并排显示处理前后的画面和直方图。伽马值、限幅阈值与分块大小都可以通过滑杆调整。"
+      },
+      {
+        "id": "kernel",
+        "file": "kernel.ts",
+        "title": "可编辑的 3×3 卷积核",
+        "summary": "Sobel、锐化、均值模糊、浮雕等预设，九个数字随改随算。",
+        "explain": "卷积核是图像处理最基础的积木。这个演示提供 Sobel X / Y / 梯度幅值、锐化、均值模糊和浮雕等预设，你也可以直接修改 3×3 矩阵里的九个数字，输出图像会实时更新。"
+      },
+      {
+        "id": "pathfinding",
+        "file": "pathfinding.ts",
+        "title": "寻路可视化",
+        "summary": "在网格上画墙，对比 A* 与 Dijkstra 的搜索过程与访问格数。",
+        "explain": "在网格上画出墙体，然后观察 A* 与 Dijkstra 两种算法如何搜索：演示会以动画显示已访问的格子和最终路径，并对比两者访问的格子数量。"
+      }
+    ]
+  },
+  "contact": {
+    "eyebrow": "05 / contact",
+    "title": "联系",
+    "big": "一起聊聊",
+    "body": "欢迎招聘方与猎头联系，探讨 IT 管理、技术开发或科技与文化遗产相关的机会。",
+    "emailLabel": "邮箱",
+    "locationLabel": "所在地",
+    "location": "马来西亚柔佛州新山市",
+    "timezoneLabel": "时区",
+    "timezone": "UTC+8（马来西亚）",
+    "resumeLabel": "简历",
+    "formTitle": "留言",
+    "formName": "姓名",
+    "formEmail": "邮箱",
+    "formMessage": "留言内容",
+    "formSubmit": "发送"
+  },
+  "about": {
+    "title": "关于我",
+    "paragraphs": [
+      "我是陈学礼（Westly Tan Xue Le），来自马来西亚柔佛州新山市。",
+      "2015 年至 2020 年，我在台湾圣约翰大学完成计算机科学学士与硕士学业。在台期间，我参与了国家级项目，并投身于早期人工智能的开发工作，主要负责计算机视觉算法——例如运用灰度处理技术来增强夜视图像效果。我采用的低照度图像增强方法包括灰度转换、直方图均衡化（含 CLAHE）、伽马校正与去噪。",
+      "2021 年至 2024 年，我转向人文领域，在郑州大学攻读考古学学术型硕士。2024 年，我在河南博物院实习，为其数字博物馆提供方向与技术支持，让技术背景在文化遗产领域找到了用武之地。",
+      "2025 年，我加入 Stayrene 担任 IT 负责人，2026 年晋升为 IT 经理，目前带领 2 人团队，负责公司内部业务系统，包括清洁管理、财务、UMS/PMS、业主门户及工单系统等。",
+      "计算机科学与考古学的结合并不常见，但对我而言，两者都关乎“看见”：一个是让机器看清图像，一个是让人看清历史。我希望继续在技术管理与科技 × 文化遗产的方向上发挥所长。"
+    ],
+    "languagesTitle": "语言",
+    "languages": ["中文", "English"]
+  },
+  "projects": {
+    "eyebrow": "projects",
+    "title": "项目",
+    "empty": "暂无内容。",
+    "back": "返回项目列表",
+    "view": "查看项目"
+  },
+  "blog": {
+    "title": "博客",
+    "empty": "暂无内容。",
+    "back": "返回博客列表"
+  },
+  "footer": {
+    "copyright": "© 陈学礼 · Westly Tan Xue Le",
+    "location": "马来西亚新山 · UTC+8"
+  },
+  "notFound": {
+    "title": "404 — 找不到页面",
+    "windowTitle": "访客@xuele: ~",
+    "command": "ls ./这个页面",
+    "error": "ls: 无法访问 './这个页面': 没有那个文件或目录",
+    "status": "exit 404",
+    "hint": "这个页面不存在，或者已经搬走了。",
+    "homeLabel": "回到首页"
+  }
+}

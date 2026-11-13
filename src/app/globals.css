@@ -1,0 +1,406 @@
+@import "tailwindcss";
+
+/* Class strategy: <html class="dark"> (default) or <html class="light">. */
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant light (&:where(.light, .light *));
+
+/* ------------------------------------------------------------------ */
+/* Design tokens                                                       */
+/* ------------------------------------------------------------------ */
+:root {
+  color-scheme: dark;
+  --bg: #070a12;
+  --surface: rgb(17 21 31 / 0.8);
+  --surface-solid: #11151f;
+  --surface-blur: 8px;
+  --border: #1e2433;
+  --muted: #9aa0b4;
+  --text: #f3f3f6;
+  --primary: #6ee7f2;
+  --accent: #e8c56b;
+  --on-primary: #070a12;
+
+  --header-h: 64px;
+  --site-w: 1152px;
+  --measure: 700px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.light {
+  color-scheme: light;
+  --bg: #f6f5f1;
+  --surface: #ffffff;
+  --surface-solid: #ffffff;
+  --surface-blur: 0px;
+  --border: #e4e2da;
+  --muted: #5e5e68;
+  --text: #141418;
+  --primary: #0e6f78;
+  --accent: #9a6b12;
+  --on-primary: #ffffff;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-solid: var(--surface-solid);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-text: var(--text);
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
+  --color-on-primary: var(--on-primary);
+
+  --font-sans:
+    var(--font-geist-sans), var(--font-noto-sc), "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  --font-mono:
+    var(--font-geist-mono), ui-monospace, "SFMono-Regular", Menlo, Consolas,
+    var(--font-noto-sc), monospace;
+  /* Syne: English display headings / English name only. */
+  --font-display:
+    var(--font-syne), var(--font-geist-sans), var(--font-noto-sc), system-ui,
+    sans-serif;
+
+  --container-site: var(--site-w);
+  --container-measure: var(--measure);
+  --ease-out-quint: var(--ease-out);
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+
+  html {
+    background: var(--bg);
+    scroll-padding-top: calc(var(--header-h) + 16px);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: transparent;
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.8;
+  }
+
+  /* Chinese typography */
+  :lang(zh-CN) {
+    line-break: strict;
+    text-autospace: normal;
+  }
+  :lang(zh-CN) :is(em, i, cite, address, dfn) {
+    font-style: normal;
+  }
+  :lang(en) body,
+  :lang(en) {
+    line-height: 1.7;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--primary) 30%, transparent);
+  }
+
+  a,
+  button,
+  summary {
+    transition:
+      color 180ms ease-out,
+      background-color 180ms ease-out,
+      border-color 180ms ease-out,
+      opacity 180ms ease-out,
+      transform 200ms var(--ease-out);
+  }
+
+  summary {
+    list-style: none;
+    cursor: pointer;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Type scale + components                                             */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .t-display {
+    text-wrap: balance;
+    font-size: 44px;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  @media (min-width: 1024px) {
+    .t-display {
+      font-size: 64px;
+    }
+  }
+  /* The English display name is long: let it scale down on narrow screens. */
+  .t-display.font-display {
+    font-size: clamp(36px, 10.5vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  @media (min-width: 1024px) {
+    .t-display.font-display {
+      font-size: 64px;
+    }
+  }
+  .t-h1 {
+    font-size: 32px;
+    line-height: 1.35;
+    font-weight: 700;
+  }
+  .t-h2 {
+    font-size: 24px;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+  .t-h3 {
+    font-size: 20px;
+    line-height: 1.5;
+    font-weight: 600;
+  }
+  .t-body {
+    font-size: 16px;
+    line-height: 1.8;
+  }
+  .t-small {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .t-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.6;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--primary);
+  }
+
+  .container-site {
+    width: 100%;
+    max-width: var(--site-w);
+    margin-inline: auto;
+    padding-inline: 16px;
+  }
+  @media (min-width: 640px) {
+    .container-site {
+      padding-inline: 24px;
+    }
+  }
+
+  .surface {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    -webkit-backdrop-filter: blur(var(--surface-blur));
+    backdrop-filter: blur(var(--surface-blur));
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 8px 20px;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: var(--on-primary);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    background: color-mix(in srgb, var(--primary) 88%, var(--text));
+  }
+  .btn-secondary {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text);
+  }
+  .btn-secondary:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+  .btn-sm {
+    min-height: 36px;
+    padding: 4px 16px;
+    font-size: 14px;
+  }
+
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 44px;
+    height: 44px;
+    border-radius: 9999px;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .icon-btn:hover,
+  .icon-btn[aria-pressed="true"] {
+    color: var(--text);
+    background: color-mix(in srgb, var(--text) 8%, transparent);
+  }
+  .icon-btn[aria-pressed="true"] {
+    color: var(--accent);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--text);
+  }
+
+  .link {
+    color: var(--primary);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--primary) 40%, transparent);
+    text-underline-offset: 4px;
+  }
+  .link:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .prose-measure {
+    max-width: var(--measure);
+  }
+
+  /* Terminal chrome shared by the lab cards and the 404 page. */
+  .term-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+    height: 40px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .term-dots {
+    display: inline-flex;
+    gap: 6px;
+  }
+  .term-dots > span {
+    width: 10px;
+    height: 10px;
+    border-radius: 9999px;
+    background: var(--border);
+  }
+  .term-tab {
+    margin-left: 8px;
+    align-self: flex-end;
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    border-bottom: 0;
+    border-radius: 8px 8px 0 0;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.4;
+    transform: translateY(1px);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Background poster (static fallback; the starfield mounts later)      */
+/* ------------------------------------------------------------------ */
+.bg-root {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--bg);
+}
+.bg-poster {
+  position: absolute;
+  inset: 0;
+}
+/* Dark: nebula-like radial gradients + tiled star pattern (inline SVG). */
+.bg-poster-gradients {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 50% at 18% 12%, rgb(27 42 74 / 0.55), transparent 70%),
+    radial-gradient(50% 45% at 85% 30%, rgb(58 37 96 / 0.4), transparent 70%),
+    radial-gradient(45% 40% at 55% 95%, rgb(110 231 242 / 0.07), transparent 70%);
+}
+.bg-poster-stars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+/* Light: no stars, a static dot grid of #0E6F78 at 6%. */
+.bg-poster-grid {
+  position: absolute;
+  inset: 0;
+  display: none;
+  background-image: radial-gradient(
+    circle at center,
+    rgb(14 111 120 / 0.06) 1.5px,
+    transparent 2px
+  );
+  background-size: 24px 24px;
+}
+.light .bg-poster-gradients,
+.light .bg-poster-stars {
+  display: none;
+}
+.light .bg-poster-grid {
+  display: block;
+}
+
+/* ------------------------------------------------------------------ */
+/* Motion preferences                                                  */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+/* <html data-fx="off"> is set by the Effects-off toggle (localStorage "fx-off"). */
+[data-fx="off"] *,
+[data-fx="off"] ::before,
+[data-fx="off"] ::after {
+  animation: none !important;
+}

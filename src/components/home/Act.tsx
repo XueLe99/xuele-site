@@ -1,0 +1,52 @@
+import type { ReactNode } from "react";
+
+export const ACTS = ["hero", "who", "skills", "experience", "lab", "contact"] as const;
+export type ActName = (typeof ACTS)[number];
+
+/**
+ * One homepage "act". `id` / `data-act` (act-0 … act-5) are the hooks the
+ * scroll choreography (ScrollTrigger, starfield store) attaches to later.
+ */
+export function Act({
+  name,
+  labelledBy,
+  className = "",
+  children,
+}: {
+  name: ActName;
+  labelledBy: string;
+  className?: string;
+  children: ReactNode;
+}) {
+  const id = `act-${ACTS.indexOf(name)}`;
+  return (
+    <section
+      id={id}
+      data-act={id}
+      data-act-name={name}
+      aria-labelledby={labelledBy}
+      className={`relative ${className}`}
+    >
+      <div className="container-site">{children}</div>
+    </section>
+  );
+}
+
+export function ActHeading({
+  id,
+  eyebrow,
+  title,
+}: {
+  id: string;
+  eyebrow: string;
+  title: string;
+}) {
+  return (
+    <header className="mb-8 md:mb-12">
+      <p className="t-eyebrow mb-2">{eyebrow}</p>
+      <h2 id={id} className="t-h1">
+        {title}
+      </h2>
+    </header>
+  );
+}

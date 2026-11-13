@@ -1,0 +1,251 @@
+{
+  "meta": {
+    "siteName": "Westly Tan Xue Le · 陈学礼",
+    "homeTitle": "Westly Tan Xue Le — IT Manager | Computer Science × Archaeology",
+    "description": "IT Manager bridging computer science and archaeology — technology × cultural heritage. Currently IT Manager at Stayrene, based in Johor Bahru, Malaysia.",
+    "aboutTitle": "About",
+    "aboutDescription": "Westly Tan Xue Le (陈学礼): Bachelor's and Master's in Computer Science, academic Master's in Archaeology, now IT Manager at Stayrene.",
+    "labTitle": "Lab",
+    "labDescription": "Experiments at the intersection of technology and cultural heritage — image enhancement, computer vision and pathfinding demos.",
+    "contactTitle": "Contact",
+    "contactDescription": "Recruiters and headhunters are welcome to get in touch about opportunities in IT management, software development, or technology for cultural heritage.",
+    "blogTitle": "Blog",
+    "blogDescription": "Articles and notes by Westly Tan Xue Le.",
+    "projectsTitle": "Projects",
+    "projectsDescription": "Projects by Westly Tan Xue Le."
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "lab": "Lab",
+    "contact": "Contact",
+    "blog": "Blog",
+    "projects": "Projects",
+    "resume": "Resume",
+    "skip": "Skip to content",
+    "main": "Main navigation",
+    "menu": "Menu",
+    "language": "Language",
+    "switchToZh": "切换到中文",
+    "switchToEn": "Switch to English",
+    "themeToLight": "Switch to light theme",
+    "themeToDark": "Switch to dark theme",
+    "fxOff": "Effects off",
+    "fxOffHint": "Turn off background and motion effects",
+    "logo": "Westly Tan Xue Le",
+    "logoLabel": "Westly Tan Xue Le — back to home"
+  },
+  "common": {
+    "downloadResume": "Download résumé",
+    "copyEmail": "Copy email",
+    "copied": "Copied",
+    "sendEmail": "Send email",
+    "resumeZh": "Résumé in Chinese (PDF)",
+    "resumeEn": "Résumé in English (PDF)",
+    "present": "Present"
+  },
+  "hero": {
+    "name": "Westly Tan Xue Le",
+    "altName": "陈学礼",
+    "headline": "IT Manager | Computer Science × Archaeology | Technology × Cultural Heritage",
+    "identity": "IT Manager · Stayrene · Johor Bahru, Malaysia",
+    "tagline": "IT Manager bridging computer science and archaeology — technology × cultural heritage.",
+    "chipsLabel": "Skills",
+    "chips": [
+      "Python",
+      "Java",
+      "Object-Oriented Programming",
+      "Computer Vision",
+      "Image Enhancement",
+      "Internal Business Systems",
+      "IT Management",
+      "Digital Museums"
+    ],
+    "scrollHint": "Scroll"
+  },
+  "who": {
+    "eyebrow": "01 / who",
+    "title": "Who I Am",
+    "phrases": [
+      "I hold a Bachelor's and Master's in Computer Science",
+      "and an academic Master's in Archaeology —",
+      "a rare combination that lets me approach problems from both the technical and the humanities side.",
+      "I'm currently IT Manager at Stayrene,",
+      "and have previously developed computer vision algorithms on national-level projects in Taiwan",
+      "and provided direction and technology for the Henan Museum's digital museum."
+    ],
+    "more": "More about me"
+  },
+  "skills": {
+    "eyebrow": "02 / skills",
+    "title": "Skills",
+    "constellationLabel": "{name} constellation",
+    "groups": [
+      {
+        "id": "programming",
+        "name": "Programming",
+        "summary": "Python, Java and other object-oriented languages",
+        "items": ["Python", "Java", "Object-oriented languages"]
+      },
+      {
+        "id": "vision",
+        "name": "Computer Vision",
+        "summary": "Image processing, grayscale processing, low-light / night-vision enhancement (grayscale conversion, histogram equalization/CLAHE, gamma correction, denoising)",
+        "items": [
+          "Image processing",
+          "Grayscale processing",
+          "Low-light / night-vision enhancement",
+          "Grayscale conversion",
+          "Histogram equalization/CLAHE",
+          "Gamma correction",
+          "Denoising"
+        ]
+      },
+      {
+        "id": "tools",
+        "name": "Tools",
+        "summary": "OpenCV, NumPy",
+        "items": ["OpenCV", "NumPy"]
+      },
+      {
+        "id": "systems",
+        "name": "Systems & Management",
+        "summary": "Internal business systems, IT team leadership (team of 2)",
+        "items": ["Internal business systems", "IT team leadership (team of 2)"]
+      },
+      {
+        "id": "interdisciplinary",
+        "name": "Interdisciplinary",
+        "summary": "Archaeology, digital museums, cultural heritage digitization",
+        "items": ["Archaeology", "Digital museums", "Cultural heritage digitization"]
+      }
+    ]
+  },
+  "experience": {
+    "eyebrow": "03 / experience",
+    "title": "Experience",
+    "workTitle": "Work experience",
+    "educationTitle": "Education",
+    "items": [
+      {
+        "id": "it-manager",
+        "kind": "work",
+        "date": "2026 – Present",
+        "role": "IT Manager",
+        "org": "Stayrene",
+        "body": "Promoted from IT Lead; leads a team of 2 responsible for IT and internal business systems."
+      },
+      {
+        "id": "it-lead",
+        "kind": "work",
+        "date": "2025",
+        "role": "IT Lead",
+        "org": "Stayrene",
+        "body": "Responsible for internal systems incl. Cleaning, Finance, UMS/PMS, Owner Portal and ticketing."
+      },
+      {
+        "id": "archaeology",
+        "kind": "education",
+        "date": "2021 – 2024",
+        "role": "Academic Master's in Archaeology",
+        "org": "Zhengzhou University",
+        "body": "Interned at Henan Museum in 2024, providing direction and technology for its digital museum."
+      },
+      {
+        "id": "computer-science",
+        "kind": "education",
+        "date": "2015 – 2020",
+        "role": "B.Sc. & M.Sc. in Computer Science",
+        "org": "St. John's University, Taiwan",
+        "body": "Took part in national-level projects and early AI development; developed computer vision algorithms (e.g. grayscale processing for night-vision enhancement)."
+      }
+    ]
+  },
+  "lab": {
+    "eyebrow": "04 / lab",
+    "title": "Lab",
+    "intro": "A space for my experiments and notes at the intersection of technology and cultural heritage — from image enhancement and computer vision to ideas on digital museums and heritage digitization. Updated over time.",
+    "open": "Open demo",
+    "viewAll": "See all demos",
+    "placeholder": "The interactive demo arrives in a later release.",
+    "placeholderLabel": "Demo placeholder",
+    "explainTitle": "How it works",
+    "demos": [
+      {
+        "id": "low-light",
+        "file": "low-light.ts",
+        "title": "Low-light image enhancement",
+        "summary": "Grayscale conversion, histogram equalization, CLAHE and gamma correction, with before/after side by side and a histogram.",
+        "explain": "This demo mirrors my computer vision work on night-vision image enhancement. It reads pixels from a canvas in the browser and applies grayscale conversion, histogram equalization, a tile-based CLAHE-lite with a clip limit, and gamma correction to a procedurally generated dark test image (or a picture you upload), showing before and after side by side along with the histogram. Gamma, clip limit and tile size are adjustable with sliders."
+      },
+      {
+        "id": "kernel",
+        "file": "kernel.ts",
+        "title": "Editable 3×3 convolution kernel",
+        "summary": "Presets for Sobel, sharpen, box blur and emboss — edit the nine numbers and watch the output update live.",
+        "explain": "Convolution kernels are the basic building block of image processing. This demo ships presets for Sobel X / Y / magnitude, sharpen, box blur and emboss, and you can edit the nine numbers of the 3×3 matrix directly — the output image updates live."
+      },
+      {
+        "id": "pathfinding",
+        "file": "pathfinding.ts",
+        "title": "Pathfinding visualizer",
+        "summary": "Draw walls on a grid and compare how A* and Dijkstra search, including visited-cell counts.",
+        "explain": "Draw walls on a grid, then watch how A* and Dijkstra search it: the demo animates the visited cells and the final path, and compares how many cells each algorithm visits."
+      }
+    ]
+  },
+  "contact": {
+    "eyebrow": "05 / contact",
+    "title": "Contact",
+    "big": "Let's talk",
+    "body": "Recruiters and headhunters are welcome to get in touch about opportunities in IT management, software development, or technology for cultural heritage.",
+    "emailLabel": "Email",
+    "locationLabel": "Location",
+    "location": "Johor Bahru, Johor, Malaysia",
+    "timezoneLabel": "Time zone",
+    "timezone": "UTC+8 (Malaysia)",
+    "resumeLabel": "Résumé",
+    "formTitle": "Send a message",
+    "formName": "Name",
+    "formEmail": "Email",
+    "formMessage": "Message",
+    "formSubmit": "Send"
+  },
+  "about": {
+    "title": "About me",
+    "paragraphs": [
+      "I'm Westly Tan Xue Le (陈学礼), based in Johor Bahru, Johor, Malaysia.",
+      "From 2015 to 2020, I completed my Bachelor's and Master's in Computer Science at St. John's University in Taiwan. During those years I took part in national-level projects and was involved in early AI development, where I was responsible for computer vision algorithms — for example, using grayscale operations to enhance night-vision imagery. The low-light enhancement methods I used include grayscale conversion, histogram equalization (including CLAHE), gamma correction and denoising.",
+      "From 2021 to 2024, I turned to the humanities and earned an academic Master's in Archaeology at Zhengzhou University in China. In 2024 I interned at the Henan Museum, providing direction and technology for its digital museum — putting my technical background to work in cultural heritage.",
+      "In 2025 I joined Stayrene as IT Lead and was promoted to IT Manager in 2026. I currently lead a team of 2 and am responsible for the company's internal business systems, including cleaning operations, finance, UMS/PMS, an owner portal and ticketing.",
+      "Computer science and archaeology are an unusual pairing, but to me both are about seeing clearly — one helps machines see images, the other helps people see history. I'm looking to keep growing in technology leadership and in work where technology meets cultural heritage."
+    ],
+    "languagesTitle": "Languages",
+    "languages": ["中文", "English"]
+  },
+  "projects": {
+    "eyebrow": "projects",
+    "title": "Projects",
+    "empty": "Nothing here yet.",
+    "back": "Back to projects",
+    "view": "View project"
+  },
+  "blog": {
+    "title": "Blog",
+    "empty": "Nothing here yet.",
+    "back": "Back to blog"
+  },
+  "footer": {
+    "copyright": "© Westly Tan Xue Le · 陈学礼",
+    "location": "Johor Bahru, Malaysia · UTC+8"
+  },
+  "notFound": {
+    "title": "404 — Page not found",
+    "windowTitle": "guest@xuele: ~",
+    "command": "ls ./this-page",
+    "error": "ls: cannot access './this-page': No such file or directory",
+    "status": "exit 404",
+    "hint": "This page doesn't exist, or it has moved.",
+    "homeLabel": "Back to home"
+  }
+}
