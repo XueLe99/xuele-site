@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { CodeSnippet } from "@/components/lab/CodeSnippet";
+import { DemoSlot } from "@/components/lab/DemoSlot";
 import { PageShell } from "@/components/layout/PageShell";
+import { CORE_SOURCE, isDemoId } from "@/lab/demos/core";
 import { resolveLocale } from "@/lib/locale";
 import type { LabDemo } from "@/lib/messages";
 import { pageMetadata } from "@/lib/seo";
@@ -30,6 +33,7 @@ export default async function LabPage({ params }: PageProps<"/[locale]/lab">) {
           <section
             key={demo.id}
             id={demo.id}
+            className="scroll-mt-24"
             data-lab-demo={demo.id}
             aria-labelledby={`${demo.id}-title`}
           >
@@ -41,38 +45,24 @@ export default async function LabPage({ params }: PageProps<"/[locale]/lab">) {
             </h2>
             <p className="t-body prose-measure mt-3 text-muted">{demo.explain}</p>
 
-            {/*
-              Demo slot. A later phase replaces the placeholder body with the
-              Sandpack editor (client-only, loaded when scrolled into view).
-            */}
-            <div
-              className="surface mt-6 overflow-hidden"
-              data-demo-slot={demo.id}
-            >
-              <div className="term-bar" aria-hidden="true">
-                <span className="term-dots">
-                  <span />
-                  <span />
-                  <span />
-                </span>
-                <span className="term-tab">{demo.file}</span>
-              </div>
-              <div className="flex min-h-48 flex-col justify-center gap-2 p-6 font-mono text-sm">
-                <p className="text-muted">
-                  <span aria-hidden="true" className="text-primary">
-                    ${" "}
-                  </span>
-                  {demo.summary}
-                </p>
-                <p className="text-accent">
-                  <span aria-hidden="true">{"// "}</span>
-                  {t("placeholder")}
-                </p>
-              </div>
-            </div>
+            {isDemoId(demo.id) && (
+              <DemoSlot
+                demo={demo.id}
+                locale={locale}
+                file={demo.file}
+                labels={{
+                  load: t("load"),
+                  loading: t("loading"),
+                  preview: t("static"),
+                }}
+              >
+                <CodeSnippet code={CORE_SOURCE[demo.id]} />
+              </DemoSlot>
+            )}
           </section>
         ))}
       </div>
+      <p className="t-small mt-12 text-muted">{t("network")}</p>
     </PageShell>
   );
 }

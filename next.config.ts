@@ -13,7 +13,14 @@ const nextConfig: NextConfig = {
   },
   turbopack: {
     rules: {
+      // `import src from "./file.js?raw"` → file contents as a string
+      // (the Sandpack demo sources in src/lab/demos).
+      "*": {
+        condition: { query: "?raw" },
+        type: "raw",
+      },
       "*.css": {
+        condition: { not: { query: "?raw" } },
         loaders: ["@tailwindcss/turbopack"],
         as: "*.css",
       },

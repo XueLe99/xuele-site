@@ -336,6 +336,127 @@
 }
 
 /* ------------------------------------------------------------------ */
+/* Lab demos: static code placeholder → Sandpack                       */
+/* Always dark (an editor), in both site themes.                       */
+/* ------------------------------------------------------------------ */
+.demo-slot {
+  --demo-h: 520px;
+  overflow: hidden;
+  border: 1px solid #1e2433;
+  border-radius: 12px;
+  background: #070a12;
+  color: #f3f3f6;
+  color-scheme: dark;
+}
+/* Desktop: Sandpack is exactly this tall (editor | preview), so the swap
+   from the placeholder causes no layout shift. */
+@media (min-width: 768px) {
+  .demo-slot {
+    min-height: calc(var(--demo-h) + 2px);
+  }
+}
+.demo-static {
+  display: flex;
+  flex-direction: column;
+  height: var(--demo-h);
+}
+.demo-bar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+  height: 40px;
+  padding-right: 8px;
+  border-bottom: 1px solid #1e2433;
+  background: #11151f;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: #9aa0b4;
+}
+.demo-tab {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 16px;
+  color: #f3f3f6;
+  box-shadow: inset 0 -1px 0 #6ee7f2;
+}
+.demo-status {
+  margin-left: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.demo-load {
+  display: none;
+  flex: none;
+  align-items: center;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 6px;
+  background: #6ee7f2;
+  color: #070a12;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+/* Touch / small screens: Sandpack is opt-in (same query as DemoSlot.tsx). */
+@media (max-width: 767.98px), (pointer: coarse) {
+  .demo-load {
+    display: inline-flex;
+  }
+  .demo-slot[data-demo-state="static"] .demo-status {
+    display: none;
+  }
+  .demo-slot[data-demo-state="static"] .demo-load {
+    margin-left: auto;
+  }
+}
+.demo-code {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.demo-code pre {
+  min-width: max-content;
+  margin: 0;
+  padding: 12px 0;
+  background: transparent !important;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 20px;
+  counter-reset: line;
+  tab-size: 2;
+}
+.demo-code .line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 36px;
+  margin-right: 16px;
+  color: #6f7690;
+  text-align: right;
+  user-select: none;
+}
+.demo-slot .sp-wrapper,
+.demo-slot .sp-layout {
+  border: 0;
+  border-radius: 0;
+}
+/* It would cover the demo's own controls; the code is editable right here. */
+.demo-slot .sp-preview-actions [title="Open in CodeSandbox"] {
+  display: none;
+}
+/* Sandpack stacks editor and preview below 768px; give the preview room. */
+@media (max-width: 767.98px) {
+  .demo-slot .sp-preview {
+    height: 560px !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /* Background: static poster + live starfield layer                    */
 /* ------------------------------------------------------------------ */
 .bg-root {

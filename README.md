@@ -3,10 +3,9 @@
 Bilingual (中文 / English) personal site for recruiters and headhunters.
 All copy comes from the approved site copy; nothing on the site is invented.
 
-> **Status: phase 2** — phase 1 (scaffold, i18n, design tokens, layout, pages,
-> SEO) plus the starry-sky background and the homepage scroll storytelling.
-> The interactive lab demos come in a later phase; their slots are in place
-> (see [Hooks](#hooks)).
+> **Status: phase 3** — phase 1 (scaffold, i18n, design tokens, layout, pages,
+> SEO), phase 2 (starry-sky background, homepage scroll storytelling) and the
+> three editable [lab demos](#lab-demos) on `/[locale]/lab`.
 
 ## Stack
 
@@ -15,6 +14,10 @@ All copy comes from the approved site copy; nothing on the site is invented.
 - **three + @react-three/fiber** (WebGL starfield), **GSAP ScrollTrigger**,
   **Lenis**, **Motion** — all loaded with dynamic `import()` after window load
   + idle; none of them is in the first-load JS
+- **@codesandbox/sandpack-react** — the editable lab demos; a separate chunk
+  that only the lab page requests, and only when a demo scrolls into view
+- **shiki** — build-time syntax highlighting of the static code placeholders
+  (server component only; never shipped to the browser)
 - Fonts via `next/font/google`: Noto Sans SC (400/500/700), Geist, Geist Mono, Syne
 - Fully statically generated (`generateStaticParams` + `setRequestLocale`)
 
@@ -133,9 +136,48 @@ desktop-only as well; on touch devices constellations are simply drawn.
 | `[data-constellation-line]`, `[data-star]`, `[data-star-chip]` | `Constellation.tsx`, `Skills.tsx`  | Constellation draw + hover        |
 | `[data-timeline-line]`, `[data-timeline-node]`, `[data-timeline-item]` | `Experience.tsx`           | Star-trail timeline               |
 | `[data-magnetic]`, `[data-contact-target]`                  | `ContactAct.tsx`                      | Magnetic button, star gathering   |
-| `[data-demo-slot="low-light" \| "kernel" \| "pathfinding"]` | `src/app/[locale]/lab/page.tsx`       | Sandpack demos (later phase)      |
+| `[data-demo-slot="low-light" \| "kernel" \| "pathfinding"]` (`data-demo-state` = `static` / `loading` / `live`) | `src/components/lab/DemoSlot.tsx` | Sandpack demos |
 
 Everything is visible and complete without these enhancements.
+
+## Lab demos
+
+`/[locale]/lab` has three editable demos, each in a section with an id anchor
+(`#low-light`, `#kernel`, `#pathfinding` — the homepage act 4 cards link to them).
+
+| Demo          | Core file     | What it does                                                                                                   |
+| ------------- | ------------- | -------------------------------------------------------------------------------------------------------------- |
+| `low-light`   | `enhance.js`  | Grayscale, gamma, histogram equalization, CLAHE-lite (tiles + clip limit + bilinear LUT blending); before/after, histograms, image upload |
+| `kernel`      | `convolve.js` | Editable 3×3 kernel + divisor; presets Identity, Sobel X / Y / magnitude, Sharpen, Box blur, Emboss             |
+| `pathfinding` | `search.js`   | 31×21 grid, draw walls, drag start/goal, animated A* / Dijkstra, visited-count and path-length comparison, random maze |
+
+- **Sources** are plain files in `src/lab/demos/<name>/` (`App.js` + the core
+  algorithm) plus `shared/scene.js` (the procedural night-street test image —
+  no image assets) and `shared/styles.css`. They are imported as strings with
+  `import src from "./file.js?raw"` (a `turbopack.rules` entry in
+  `next.config.ts`; typed in `src/raw.d.ts`) and are excluded from ESLint,
+  because they run inside the sandbox, not in the site bundle.
+  `src/lab/demos/index.ts` maps them to Sandpack files (client-only);
+  `src/lab/demos/core.ts` is the server-safe part (ids, colours, core sources).
+- **Placeholder**: the lab page server-renders the core algorithm file of each
+  demo with shiki (`src/components/lab/CodeSnippet.tsx`) in a box with the same
+  fixed height as the editor (520px), so swapping in Sandpack causes no layout
+  shift on desktop.
+- **Loading**: `DemoSlot.tsx` (client) imports `SandpackDemo.tsx` with
+  `next/dynamic` (`ssr: false`) when the slot comes within 200px of the
+  viewport (IntersectionObserver). On `<768px` or coarse pointers nothing loads
+  automatically: the code is shown with a “加载可交互演示 / Load interactive
+  demo” button. Without JavaScript the highlighted code simply stays.
+- **Sandpack**: `react` template, custom dark theme from the site tokens
+  (`CODE_COLORS` in `core.ts`, shared with the shiki theme), editor and preview
+  side by side on desktop and stacked on mobile, line numbers, 520px high.
+  The page locale is injected as a hidden `/locale.js`; each `App.js` has a
+  small `en` / `zh` label dictionary. A hidden `/sandbox.config.json` turns off
+  the bundler's infinite-loop guard, which otherwise aborts per-pixel loops
+  after 100k iterations.
+- The demo area is always dark, in both site themes. Sandpack's bundler and
+  the demo's React runtime are loaded from CodeSandbox's servers at run time,
+  so the live demos need network access; the static code does not.
 
 ## SEO
 
@@ -180,10 +222,15 @@ src/
   lib/                     seo.ts, locale.ts, prefs.ts (theme/fx stores), no-flash.ts, messages.ts,
                            capability.ts (device tier), after-load.ts, sky-store.ts (scroll → starfield)
   content/                 schema.ts, projects.ts, blog.ts
+  lab/demos/               core.ts, index.ts, low-light/, kernel/, pathfinding/, shared/
+                           (Sandpack demo sources, imported with ?raw)
+  raw.d.ts                 type for `?raw` imports
   components/
     background/            Background.tsx (poster), BackgroundLive.tsx (tier selection),
                            StarfieldLite.tsx (Canvas 2D), StarfieldWebGL.tsx + sky-scene.ts (R3F / three)
     fx/                    FxProvider.tsx (useFx)
+    lab/                   CodeSnippet.tsx (shiki, server), DemoSlot.tsx (lazy mount),
+                           SandpackDemo.tsx (the only Sandpack import)
     layout/                Header.tsx, header-controls.tsx, Footer.tsx, PageShell.tsx
     home/                  Act, Hero, WhoIAm, Skills, Constellation, Experience,
                            LabPreview, ContactAct, ProjectsSection, HomeFx (scroll choreography)

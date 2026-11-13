@@ -167,32 +167,34 @@
     "intro": "A space for my experiments and notes at the intersection of technology and cultural heritage — from image enhancement and computer vision to ideas on digital museums and heritage digitization. Updated over time.",
     "open": "Open demo",
     "viewAll": "See all demos",
-    "placeholder": "The interactive demo arrives in a later release.",
-    "placeholderLabel": "Demo placeholder",
     "explainTitle": "How it works",
     "demos": [
       {
         "id": "low-light",
-        "file": "low-light.ts",
+        "file": "enhance.js",
         "title": "Low-light image enhancement",
         "summary": "Grayscale conversion, histogram equalization, CLAHE and gamma correction, with before/after side by side and a histogram.",
-        "explain": "This demo mirrors my computer vision work on night-vision image enhancement. It reads pixels from a canvas in the browser and applies grayscale conversion, histogram equalization, a tile-based CLAHE-lite with a clip limit, and gamma correction to a procedurally generated dark test image (or a picture you upload), showing before and after side by side along with the histogram. Gamma, clip limit and tile size are adjustable with sliders."
+        "explain": "This demo mirrors my computer vision work on night-vision image enhancement. It reads pixels from a canvas in the browser and applies grayscale conversion, gamma correction, histogram equalization and a CLAHE-lite — per-tile histograms, a clip limit, then bilinear interpolation between neighbouring tile lookup tables — to a procedurally generated dark test image (or a picture you upload), showing before and after side by side with their luminance histograms. Gamma, clip limit and tile grid are adjustable with sliders, and the code itself is editable."
       },
       {
         "id": "kernel",
-        "file": "kernel.ts",
+        "file": "convolve.js",
         "title": "Editable 3×3 convolution kernel",
         "summary": "Presets for Sobel, sharpen, box blur and emboss — edit the nine numbers and watch the output update live.",
-        "explain": "Convolution kernels are the basic building block of image processing. This demo ships presets for Sobel X / Y / magnitude, sharpen, box blur and emboss, and you can edit the nine numbers of the 3×3 matrix directly — the output image updates live."
+        "explain": "Convolution kernels are the basic building block of image processing: every output pixel is a weighted sum of its 3×3 neighbourhood. This demo ships presets for Sobel X / Y / magnitude, sharpen, box blur and emboss, and you can edit the nine numbers and the divisor directly — the output image updates live."
       },
       {
         "id": "pathfinding",
-        "file": "pathfinding.ts",
+        "file": "search.js",
         "title": "Pathfinding visualizer",
         "summary": "Draw walls on a grid and compare how A* and Dijkstra search, including visited-cell counts.",
-        "explain": "Draw walls on a grid, then watch how A* and Dijkstra search it: the demo animates the visited cells and the final path, and compares how many cells each algorithm visits."
+        "explain": "Draw walls on a grid, drag the start and goal, then watch how A* and Dijkstra search it: the demo animates the visited cells and the final path, and compares how many cells each algorithm visits and how long the path is. Both find a shortest path, but A* uses the Manhattan distance to the goal as a heuristic and usually visits far fewer cells."
       }
-    ]
+    ],
+    "load": "Load interactive demo",
+    "loading": "Loading interactive demo…",
+    "static": "Core algorithm (static preview)",
+    "network": "The interactive demo runs in a sandboxed iframe; its bundler is loaded from CodeSandbox."
   },
   "contact": {
     "eyebrow": "05 / contact",
@@ -221,7 +223,10 @@
       "Computer science and archaeology are an unusual pairing, but to me both are about seeing clearly — one helps machines see images, the other helps people see history. I'm looking to keep growing in technology leadership and in work where technology meets cultural heritage."
     ],
     "languagesTitle": "Languages",
-    "languages": ["中文", "English"]
+    "languages": [
+      "中文",
+      "English"
+    ]
   },
   "projects": {
     "eyebrow": "projects",

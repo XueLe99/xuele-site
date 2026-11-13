@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Sandpack demo sources: run inside the sandbox, not in the site bundle.
+    "src/lab/demos/**/*.js",
   ]),
 ]);
 
