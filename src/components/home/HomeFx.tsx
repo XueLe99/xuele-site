@@ -153,7 +153,7 @@ export function HomeFx() {
           };
           // Entries already scrolled past stay visible (no flash on reload mid-page).
           items.forEach((item) => {
-            if (item.getBoundingClientRect().top < window.innerHeight * 0.7) {
+            if (item.getBoundingClientRect().top < window.innerHeight * 0.85) {
               item.setAttribute("data-shown", "");
             }
           });
@@ -165,9 +165,12 @@ export function HomeFx() {
               scaleY: 1,
               ease: "none",
               scrollTrigger: {
+                // The trail is fully drawn (last node lit) by the time the
+                // whole act is in view, not only after it has half left.
                 trigger: timeline,
-                start: "top 70%",
-                end: "bottom 70%",
+                start: "top 85%",
+                endTrigger: timeline.closest("[data-act]") ?? timeline,
+                end: "bottom bottom",
                 scrub: 0.8,
               },
               onUpdate() {

@@ -2,7 +2,10 @@ import { SHOW_BLOG, SHOW_PROJECTS } from "./flags";
 
 /** Base URL, without trailing slash. A custom domain only needs the env var. */
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "http://localhost:3000")
 ).replace(/\/+$/, "");
 
 export const EMAIL = "TAN6533@gmail.com";

@@ -3,9 +3,10 @@
 Bilingual (中文 / English) personal site for recruiters and headhunters.
 All copy comes from the approved site copy; nothing on the site is invented.
 
-> **Status: phase 3** — phase 1 (scaffold, i18n, design tokens, layout, pages,
-> SEO), phase 2 (starry-sky background, homepage scroll storytelling) and the
-> three editable [lab demos](#lab-demos) on `/[locale]/lab`.
+> **Status: complete** — scaffold, i18n, design tokens, layout, pages and SEO;
+> starry-sky background with [degradation tiers](#background-starry-sky) and
+> homepage scroll storytelling; three editable [lab demos](#lab-demos) on
+> `/[locale]/lab`.
 
 ## Stack
 
@@ -36,7 +37,7 @@ Copy `.env.example` to `.env.local`. There are no secrets.
 
 | Variable                    | Default                 | Purpose                                                                 |
 | --------------------------- | ----------------------- | ----------------------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`      | `http://localhost:3000` | Base URL for canonical/hreflang, sitemap, robots, OG image and JSON-LD. |
+| `NEXT_PUBLIC_SITE_URL`      | Vercel's `VERCEL_PROJECT_PRODUCTION_URL` (https), else `http://localhost:3000` | Base URL for canonical/hreflang, sitemap, robots, OG image and JSON-LD. |
 | `NEXT_PUBLIC_SHOW_BLOG`     | `false`                 | Feature flag `SHOW_BLOG`.                                               |
 | `NEXT_PUBLIC_SHOW_PROJECTS` | `false`                 | Feature flag `SHOW_PROJECTS`.                                           |
 | `NEXT_PUBLIC_FORMSPREE_ID`  | _(unset)_               | Optional. The contact form is rendered only when set.                   |
@@ -117,7 +118,7 @@ effects off nothing runs.
 | 0   | Mask-reveal lines (500ms / 80ms stagger), chips fade (40ms stagger)                             | CSS only (`globals.css`)      |
 | 1   | Phrases light up muted → text (`--lit`), camera push                                            | ScrollTrigger scrub           |
 | 2   | Constellation lines draw (600ms), stars light accent; chip ↔ star hover highlight               | Motion `inView` + `animate`   |
-| 3   | Star-trail line `scaleY` scrub, nodes light when reached, entries fade + rise 16px              | ScrollTrigger + CSS           |
+| 3   | Star-trail line `scaleY` scrub (complete when the act's bottom enters the viewport), nodes light when reached, entries fade + rise 16px | ScrollTrigger + CSS           |
 | 4   | Stars dim                                                                                       | ScrollTrigger → sky store     |
 | 5   | Stars gather; magnetic primary button (≤6px)                                                    | ScrollTrigger, pointer events |
 
@@ -203,11 +204,13 @@ is the localized 404.
 ## Deploying to Vercel
 
 1. Import the repository in Vercel (framework preset: Next.js, default build settings).
-2. Set `NEXT_PUBLIC_SITE_URL` to the production URL (for example the
-   `*.vercel.app` URL, later the custom domain) for the Production environment.
+2. `NEXT_PUBLIC_SITE_URL` is optional: without it the site uses Vercel's
+   `VERCEL_PROJECT_PRODUCTION_URL` (the project's production domain, served
+   over https). Set it for the Production environment only to force a specific
+   canonical domain.
 3. Optionally set the flags and `NEXT_PUBLIC_FORMSPREE_ID`.
-4. Deploy. When a custom domain is added, update `NEXT_PUBLIC_SITE_URL` and redeploy —
-   nothing else changes.
+4. Deploy. After adding a custom domain, redeploy so the canonical URLs,
+   sitemap and OG image pick it up (the value is read at build time).
 
 ## Project structure
 
