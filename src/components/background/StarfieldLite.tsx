@@ -8,6 +8,7 @@ import {
   pickColorIndex,
   startThrottledLoop,
 } from "./star-utils";
+import { sky } from "@/lib/sky-store";
 
 /**
  * Canvas-2D "lite" starfield for phones, coarse pointers, low-core CPUs and
@@ -25,6 +26,7 @@ interface Star {
   factor: number; // scroll parallax
   speed: number; // twinkle rad/s, 0 = steady
   seed: number;
+  near: boolean; // near layer: steps aside under the hero particles
 }
 
 const LAYERS = [
@@ -44,6 +46,7 @@ function makeStars(): Star[] {
       alpha: lerp(layer.alpha),
       color: STAR_COLORS[pickColorIndex(rand())],
       factor: layer.factor,
+      near: layer === LAYERS[LAYERS.length - 1],
       // 1/3 of the stars twinkle with a 2–5s period.
       speed: rand() < 1 / 3 ? (Math.PI * 2) / (2 + rand() * 3) : 0,
       seed: rand() * Math.PI * 2,
@@ -68,6 +71,7 @@ export default function StarfieldLite({ onReady }: StarfieldProps) {
     let height = 0;
     let time = 0;
     let ready = false;
+    let near = 1 - sky.hero;
 
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -88,13 +92,16 @@ export default function StarfieldLite({ onReady }: StarfieldProps) {
       time += dt;
       const scroll = window.scrollY;
       ctx.clearRect(0, 0, width, height);
+      // Hero: the near layer fades out under the Antigravity particles.
+      near += (1 - sky.hero - near) * 0.2;
       for (const s of stars) {
+        if (s.near && near < 0.01) continue;
         const span = height + 8;
         const y = ((((s.y * span - scroll * s.factor) % span) + span) % span) - 4;
         const twinkle = s.speed
           ? 0.8 + 0.2 * Math.sin(time * s.speed + s.seed) // 0.6–1.0
           : 1;
-        ctx.globalAlpha = s.alpha * twinkle;
+        ctx.globalAlpha = s.alpha * twinkle * (s.near ? near : 1);
         ctx.fillStyle = s.color;
         ctx.beginPath();
         ctx.arc(s.x * width, y, s.r, 0, Math.PI * 2);

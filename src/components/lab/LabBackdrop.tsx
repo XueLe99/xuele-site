@@ -31,7 +31,8 @@ export function LabBackdrop() {
           linesColor="#2A3145"
           scanColor="#6EE7F2"
           cells={desktop ? 10 : 6}
-          scanDuration={3}
+          // Slow sweep: 6s across, 4s rest (component defaults are 2.4s / 1.6s).
+          scanDuration={6}
           scanDelay={4}
           glow={0.5}
           enableWebcam={false}

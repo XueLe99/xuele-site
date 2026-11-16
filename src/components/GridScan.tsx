@@ -573,7 +573,10 @@ export const GridScan = ({
     dpr
   };
   const settingsRef = useRef(settings);
-  settingsRef.current = settings;
+  // Synced after commit, before the effects below read it (react-hooks/refs).
+  useEffect(() => {
+    settingsRef.current = settings;
+  });
 
   useEffect(() => {
     const container = containerRef.current;

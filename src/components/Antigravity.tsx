@@ -426,7 +426,10 @@ const Antigravity = ({
     maxRatio: clamp(maxDevicePixelRatio, 0.5, 3)
   };
   const settingsRef = useRef(settings);
-  settingsRef.current = settings;
+  // Synced after commit, before the effects below read it (react-hooks/refs).
+  useEffect(() => {
+    settingsRef.current = settings;
+  });
 
   useEffect(() => {
     wakeRef.current?.();
