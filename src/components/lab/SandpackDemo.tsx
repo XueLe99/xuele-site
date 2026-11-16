@@ -1,6 +1,13 @@
 "use client";
 
-import { Sandpack, type SandpackFiles, type SandpackTheme } from "@codesandbox/sandpack-react";
+import {
+  SandpackCodeEditor,
+  SandpackLayout,
+  SandpackPreview,
+  SandpackProvider,
+  type SandpackFiles,
+  type SandpackTheme,
+} from "@codesandbox/sandpack-react";
 import { useEffect, useMemo, useState } from "react";
 import { DEMOS } from "@/lab/demos";
 import { CODE_COLORS as C, type DemoId } from "@/lab/demos/core";
@@ -40,10 +47,18 @@ const theme: SandpackTheme = {
 export default function SandpackDemo({
   demo,
   locale,
+  showCode,
+  mountEditor,
+  sourceId,
   onMount,
 }: {
   demo: DemoId;
   locale: string;
+  /** Drives the open/closed height. */
+  showCode: boolean;
+  /** When false the CodeMirror editor is not mounted. */
+  mountEditor: boolean;
+  sourceId: string;
   onMount: () => void;
 }) {
   const { core, files } = DEMOS[demo];
@@ -84,23 +99,33 @@ export default function SandpackDemo({
     [files, locale, compact],
   );
 
-  useEffect(onMount, [onMount]);
+  useEffect(() => {
+    onMount();
+  }, [onMount]);
 
   return (
-    <Sandpack
+    <SandpackProvider
       template="react"
       theme={theme}
       files={sandpackFiles}
       options={{
         activeFile: core,
         visibleFiles: Object.keys(files),
-        showLineNumbers: true,
-        showTabs: true,
-        editorHeight: 520,
-        editorWidthPercentage: 50,
-        // Start bundling only when the preview is actually on screen.
         initMode: "user-visible",
       }}
-    />
+    >
+      <SandpackLayout className="demo-pack">
+        <SandpackPreview
+          showOpenInCodeSandbox={false}
+          showRefreshButton={false}
+          showRestartButton={false}
+        />
+        {mountEditor && (
+          <div id={sourceId} className={showCode ? "demo-source-panel open" : "demo-source-panel"}>
+            <SandpackCodeEditor showLineNumbers showTabs initMode="immediate" />
+          </div>
+        )}
+      </SandpackLayout>
+    </SandpackProvider>
   );
 }

@@ -185,7 +185,10 @@
     ],
     "load": "加载可交互演示",
     "loading": "正在加载可交互演示…",
-    "static": "核心算法（静态预览）",
+    "static": "预览",
+    "viewSource": "查看源码",
+    "hideSource": "收起源码",
+    "viewOnGitHub": "在 GitHub 查看",
     "network": "交互演示在沙盒 iframe 中运行，打包器从 CodeSandbox 加载。"
   },
   "contact": {

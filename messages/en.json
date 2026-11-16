@@ -193,7 +193,10 @@
     ],
     "load": "Load interactive demo",
     "loading": "Loading interactive demo…",
-    "static": "Core algorithm (static preview)",
+    "static": "Preview",
+    "viewSource": "View source",
+    "hideSource": "Hide source",
+    "viewOnGitHub": "View on GitHub",
     "network": "The interactive demo runs in a sandboxed iframe; its bundler is loaded from CodeSandbox."
   },
   "contact": {
