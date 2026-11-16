@@ -1,7 +1,7 @@
 "use client";
 
 import { Sandpack, type SandpackFiles, type SandpackTheme } from "@codesandbox/sandpack-react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DEMOS } from "@/lab/demos";
 import { CODE_COLORS as C, type DemoId } from "@/lab/demos/core";
 
@@ -48,12 +48,30 @@ export default function SandpackDemo({
 }) {
   const { core, files } = DEMOS[demo];
 
+  // The pathfinding preview iframe is about half the page, so a max-width
+  // query inside it would hide Compare on a desktop monitor. COMPACT follows
+  // the page viewport instead (the same 768px breakpoint as the lab layout).
+  const [compact, setCompact] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(max-width: 767.98px)").matches,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767.98px)");
+    const sync = () => setCompact(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
   const sandpackFiles = useMemo<SandpackFiles>(
     () => ({
       ...files,
       // The page locale, so the demo UI can be Chinese on /zh.
       "/locale.js": {
         code: `export const LOCALE = ${JSON.stringify(locale)};\n`,
+        hidden: true,
+      },
+      "/env.js": {
+        code: `export const COMPACT = ${compact};\n`,
         hidden: true,
       },
       // The bundler aborts any loop after 100k iterations; per-pixel loops
@@ -63,7 +81,7 @@ export default function SandpackDemo({
         hidden: true,
       },
     }),
-    [files, locale],
+    [files, locale, compact],
   );
 
   useEffect(onMount, [onMount]);

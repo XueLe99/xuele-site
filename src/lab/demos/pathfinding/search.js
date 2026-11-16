@@ -84,6 +84,9 @@ export function bfs(grid, start, goal, { diagonal }) {
  * so once either bound reaches `best`, `best` is optimal and we stop.
  */
 export function bidirectionalAstar(grid, start, goal, { heuristic, diagonal }) {
+  // The reverse search is rooted on the goal, so a walled goal would otherwise
+  // look reachable. Every other search simply cannot step onto a wall.
+  if (start !== goal && (grid.walls[start] || grid.walls[goal])) return { visited: [], path: [] };
   const n = grid.cols * grid.rows;
   const dist = distance(heuristic, grid.cols);
   const side = (from, to) => ({
