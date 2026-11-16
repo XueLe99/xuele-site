@@ -344,7 +344,10 @@
   overflow: hidden;
   border: 1px solid #1e2433;
   border-radius: 12px;
-  background: #070a12;
+  /* ~80% opaque + 8px blur: the code stays readable over the Lab grid scan. */
+  background: rgb(7 10 18 / 0.8);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   color: #f3f3f6;
   color-scheme: dark;
 }
@@ -445,6 +448,13 @@
   border: 0;
   border-radius: 0;
 }
+/* The editor takes the card's translucent background instead of its own. */
+.demo-slot .sp-wrapper {
+  --sp-colors-surface1: transparent;
+}
+.demo-slot .sp-layout {
+  background: transparent;
+}
 /* It would cover the demo's own controls; the code is editable right here. */
 .demo-slot .sp-preview-actions [title="Open in CodeSandbox"] {
   display: none;
@@ -531,6 +541,69 @@
     transparent
   );
 }
+
+/* ------------------------------------------------------------------ */
+/* React Bits WebGL layers: hero particles (Antigravity), Lab grid scan */
+/* Client-only, dark theme only; see HeroFx.tsx / LabBackdrop.tsx.       */
+/* ------------------------------------------------------------------ */
+@keyframes fx-layer-in {
+  from {
+    opacity: 0;
+  }
+}
+/* Hero: above the fixed starfield (z -10), below the content; also runs under
+   the translucent header. Fades out toward the next act. */
+.hero-fx {
+  position: absolute;
+  inset: calc(-1 * var(--header-h)) 0 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent);
+  mask-image: linear-gradient(to bottom, #000 78%, transparent);
+}
+.hero-fx-canvas {
+  position: absolute;
+  inset: 0;
+  animation: fx-layer-in 600ms ease-out;
+}
+/* Contrast: soft dark radial vignette behind the name / text column. */
+.hero-fx-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse min(720px, 90vw) 62% at max(34%, calc(50% - 220px)) 48%,
+    rgb(7 10 18 / 0.62),
+    rgb(7 10 18 / 0.3) 55%,
+    transparent 78%
+  );
+}
+/* Lab: the one effect on the page. Its solid base covers the star poster. */
+.lab-fx {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--bg);
+  animation: fx-layer-in 600ms ease-out;
+}
+.lab-fx-canvas {
+  position: absolute;
+  inset: 0;
+}
+/* Keeps the headings and body copy legible over the grid lines. */
+.lab-fx-veil {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse min(1100px, 100vw) 80% at 50% 45%,
+    rgb(7 10 18 / 0.55),
+    rgb(7 10 18 / 0.2) 70%,
+    transparent
+  );
+}
+
 .light .bg-poster-gradients,
 .light .bg-poster-stars {
   display: none;

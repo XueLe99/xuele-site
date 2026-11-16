@@ -52,6 +52,20 @@ function hasWebGL(): boolean {
   return webgl;
 }
 
+let webgl2: boolean | undefined;
+function hasWebGL2(): boolean {
+  if (webgl2 === undefined) {
+    try {
+      const gl = document.createElement("canvas").getContext("webgl2");
+      webgl2 = !!gl;
+      gl?.getExtension("WEBGL_lose_context")?.loseContext();
+    } catch {
+      webgl2 = false;
+    }
+  }
+  return webgl2;
+}
+
 function readCapability(): Capability {
   if (matches(REDUCED) || connection()?.saveData) return "poster";
   if (
@@ -85,4 +99,11 @@ export function useDesktopPointer(): boolean {
     () => !matches(NARROW) && matches(FINE),
     () => false,
   );
+}
+
+const never = () => () => {};
+
+/** WebGL2 is what the React Bits layers (Antigravity, GridScan) need. False on the server. */
+export function useWebGL2(): boolean {
+  return useSyncExternalStore(never, hasWebGL2, () => false);
 }
