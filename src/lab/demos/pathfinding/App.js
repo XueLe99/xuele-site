@@ -635,6 +635,7 @@ export default function App() {
 
   return (
     <main>
+      <div className="tabs-fade">
       <div className="tabs" role={multi ? "group" : "tablist"} aria-label={t.algorithm}>
         {ALGOS.map((a) => {
           const on = shown.includes(a.id);
@@ -655,6 +656,7 @@ export default function App() {
             </button>
           );
         })}
+      </div>
       </div>
 
       {!COMPACT && (

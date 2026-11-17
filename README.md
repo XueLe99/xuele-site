@@ -161,22 +161,23 @@ Everything is visible and complete without these enhancements.
   `src/lab/demos/index.ts` maps them to Sandpack files (client-only);
   `src/lab/demos/core.ts` is the server-safe part (ids, colours, core sources).
 - **Placeholder**: before Sandpack mounts, the card is a dark preview shell
-  (560px on desktop, 480px below 768px), not the source. The core file is still
-  server-rendered with shiki (`src/components/lab/CodeSnippet.tsx`) and stays
-  collapsed under “View source” until the live editor takes over.
+  (at least 480px), not the source. The core file is still server-rendered with
+  shiki (`src/components/lab/CodeSnippet.tsx`) and stays collapsed under
+  “View source” until the live editor takes over.
 - **Loading**: `DemoSlot.tsx` (client) imports `SandpackDemo.tsx` with
   `next/dynamic` (`ssr: false`) when the slot comes within 200px of the
   viewport (IntersectionObserver). On `<768px` or coarse pointers nothing loads
   automatically: the shell shows a “加载可交互演示 / Load interactive demo”
   button. The GitHub link to the source file works without JavaScript.
 - **Sandpack**: `react` template, custom dark theme from the site tokens
-  (`CODE_COLORS` in `core.ts`). The preview is full width (560px tall on
-  desktop, 480px on small screens). The code editor is not mounted until
-  “View source” / “查看源码”; it then opens below the preview (240ms). The
-  page locale is injected as a hidden `/locale.js`; each `App.js` has a small
-  `en` / `zh` label dictionary. A hidden `/sandbox.config.json` turns off the
-  bundler's infinite-loop guard, which otherwise aborts per-pixel loops after
-  100k iterations.
+  (`CODE_COLORS` in `core.ts`). The preview is full width. Each demo posts its
+  content height to the page, which sizes the iframe to match (minimum 480px,
+  no inner scrollbar). The code editor is not mounted until “View source” /
+  “查看源码”; it then opens below the preview (240ms, at most 480px tall, and
+  scrolls inside the editor). The page locale is injected as a hidden
+  `/locale.js`; each `App.js` has a small `en` / `zh` label dictionary. A
+  hidden `/sandbox.config.json` turns off the bundler's infinite-loop guard,
+  which otherwise aborts per-pixel loops after 100k iterations.
 - The demo area is always dark, in both site themes. Sandpack's bundler and
   the demo's React runtime are loaded from CodeSandbox's servers at run time,
   so the live demos need network access; the static code does not.
