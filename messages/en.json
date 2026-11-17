@@ -187,13 +187,16 @@
         "id": "pathfinding",
         "file": "search.js",
         "title": "Pathfinding visualizer",
-        "summary": "Draw walls on a grid and compare how A* and Dijkstra search, including visited-cell counts.",
-        "explain": "Draw walls on a grid, drag the start and goal, then watch how A* and Dijkstra search it: the demo animates the visited cells and the final path, and compares how many cells each algorithm visits and how long the path is. Both find a shortest path, but A* uses the Manhattan distance to the goal as a heuristic and usually visits far fewer cells."
+        "summary": "Draw walls and compare eight pathfinding algorithms, or race up to four of them on the same map.",
+        "explain": "Draw walls, drag the start and goal, and run BFS, greedy best-first, Dijkstra, A*, bidirectional A*, jump point search, Theta* or D* Lite. The heuristic switches between Manhattan, octile and Euclidean, and diagonal steps can be turned on. Compare mode runs two to four algorithms on the same map and outlines whoever visits the fewest cells. With D* Lite you can add a wall during the run: that cell flashes and the route is repaired incrementally. The table lists cells visited, path length and time, and whether the result is optimal for the current settings."
       }
     ],
     "load": "Load interactive demo",
     "loading": "Loading interactive demo…",
-    "static": "Core algorithm (static preview)",
+    "static": "Preview",
+    "viewSource": "View source",
+    "hideSource": "Hide source",
+    "viewOnGitHub": "View on GitHub",
     "network": "The interactive demo runs in a sandboxed iframe; its bundler is loaded from CodeSandbox."
   },
   "contact": {

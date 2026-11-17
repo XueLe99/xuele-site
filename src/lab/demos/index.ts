@@ -11,6 +11,8 @@ import convolve from "./kernel/convolve.js?raw";
 import lowLightApp from "./low-light/App.js?raw";
 import enhance from "./low-light/enhance.js?raw";
 import pathfindingApp from "./pathfinding/App.js?raw";
+import dstar from "./pathfinding/dstar.js?raw";
+import grid from "./pathfinding/grid.js?raw";
 import search from "./pathfinding/search.js?raw";
 import scene from "./shared/scene.js?raw";
 import styles from "./shared/styles.css?raw";
@@ -47,6 +49,8 @@ export const DEMOS: Record<DemoId, DemoSource> = {
     core: "/search.js",
     files: {
       "/search.js": search,
+      "/grid.js": grid,
+      "/dstar.js": dstar,
       "/App.js": pathfindingApp,
       "/styles.css": styles,
     },

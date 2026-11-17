@@ -56,6 +56,9 @@ export default async function LabPage({ params }: PageProps<"/[locale]/lab">) {
                   load: t("load"),
                   loading: t("loading"),
                   preview: t("static"),
+                  viewSource: t("viewSource"),
+                  hideSource: t("hideSource"),
+                  viewOnGitHub: t("viewOnGitHub"),
                 }}
               >
                 <CodeSnippet code={CORE_SOURCE[demo.id]} />
