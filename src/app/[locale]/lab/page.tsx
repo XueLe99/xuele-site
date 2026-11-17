@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { CodeSnippet } from "@/components/lab/CodeSnippet";
 import { DemoSlot } from "@/components/lab/DemoSlot";
+import { LabBackdrop } from "@/components/lab/LabBackdrop";
 import { PageShell } from "@/components/layout/PageShell";
 import { CORE_SOURCE, isDemoId } from "@/lab/demos/core";
 import { resolveLocale } from "@/lib/locale";
@@ -28,6 +29,7 @@ export default async function LabPage({ params }: PageProps<"/[locale]/lab">) {
 
   return (
     <PageShell title={t("title")} intro={t("intro")}>
+      <LabBackdrop />
       <div className="flex flex-col gap-16">
         {demos.map((demo, i) => (
           <section

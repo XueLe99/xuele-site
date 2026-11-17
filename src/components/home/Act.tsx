@@ -11,11 +11,14 @@ export function Act({
   name,
   labelledBy,
   className = "",
+  backdrop,
   children,
 }: {
   name: ActName;
   labelledBy: string;
   className?: string;
+  /** Decorative layer behind the content, outside the container (hero particles). */
+  backdrop?: ReactNode;
   children: ReactNode;
 }) {
   const id = `act-${ACTS.indexOf(name)}`;
@@ -27,6 +30,7 @@ export function Act({
       aria-labelledby={labelledBy}
       className={`relative ${className}`}
     >
+      {backdrop}
       <div className="container-site">{children}</div>
     </section>
   );

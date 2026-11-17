@@ -10,6 +10,11 @@ export const sky = {
   dim: 0,
   /** Act 5 progress 0→1: stars drift toward `[data-contact-target]`. */
   gather: 0,
+  /**
+   * 1 while the hero particle layer (Antigravity) is on screen: the near star
+   * layer steps aside so the two layers do not compete. Owned by HeroFx.tsx.
+   */
+  hero: 0,
 };
 
 export function resetSky() {

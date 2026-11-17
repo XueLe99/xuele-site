@@ -5,6 +5,7 @@ import { CopyEmailButton } from "@/components/ui/CopyEmailButton";
 import { ArrowDownIcon, DownloadIcon } from "@/components/ui/icons";
 import type { Locale } from "@/i18n/routing";
 import { Act } from "./Act";
+import { HeroFx } from "./HeroFx";
 
 /** Stagger index for the CSS-only entrance (globals.css, "Act 0"). */
 const order = (i: number) => ({ "--i": i }) as CSSProperties;
@@ -13,6 +14,7 @@ const order = (i: number) => ({ "--i": i }) as CSSProperties;
  * Act 0. Fully static HTML; the name heading is the LCP element.
  * The entrance is pure CSS (`@keyframes hero-line` / `hero-chip`): no JS, no
  * hidden SSR state, and the name is partly painted from the very first frame.
+ * <HeroFx /> adds the particle layer behind it on the client, after load.
  */
 export async function Hero({ locale }: { locale: Locale }) {
   const t = await getTranslations({ locale, namespace: "hero" });
@@ -24,6 +26,7 @@ export async function Hero({ locale }: { locale: Locale }) {
     <Act
       name="hero"
       labelledBy="hero-name"
+      backdrop={<HeroFx />}
       className="flex min-h-[calc(100svh-var(--header-h))] flex-col justify-center py-16"
     >
       <div className="max-w-4xl">

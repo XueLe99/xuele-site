@@ -44,6 +44,7 @@ const MAX_STRETCH = 1.5;
 const PARALLAX_LERP = 0.05;
 const DIM_BRIGHTNESS = 0.4; // act 4
 const FAST_SCROLL = 900; // px/s: no meteors above this
+const NEAR_LAYER = LAYERS.length - 1; // hidden while the hero particle layer is up
 
 const hexToRgb = (hex: string) => {
   const n = parseInt(hex.slice(1), 16);
@@ -333,6 +334,7 @@ export function createSkyScene(): SkyScene {
   let nebulaTime = 0;
   let brightness = 1;
   let stretch = 1;
+  let near = 1 - sky.hero;
   let lastCamZ = sky.push * CAMERA_PUSH;
   let lastScroll = window.scrollY;
   let scrollSpeed = 0;
@@ -380,6 +382,13 @@ export function createSkyScene(): SkyScene {
         ty = 1 - ((rect.top + rect.height / 2) / height) * 2;
       }
     }
+
+    // Hero: the near layer fades out under the Antigravity particles (and is
+    // not drawn at all once gone); mid / far layers stay.
+    near += (1 - sky.hero - near) * 0.12;
+    const nearLayer = layers[NEAR_LAYER];
+    nearLayer.points.visible = near > 0.01;
+    nearLayer.material.uniforms.uOpacity.value = nearLayer.spec.opacity * near;
 
     for (const { spec, material } of layers) {
       const u = material.uniforms;
