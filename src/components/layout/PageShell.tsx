@@ -15,7 +15,10 @@ export function PageShell({
   return (
     <div className="container-site py-16 md:py-24">
       <header className="mb-12">
-        <h1 className={`t-h1 md:text-[40px] ${displayFont ? "font-display" : ""}`}>
+        <h1
+          data-heading-mask
+          className={`t-h1 md:text-[40px] ${displayFont ? "font-display" : ""}`}
+        >
           {title}
         </h1>
         {intro && <p className="t-body prose-measure mt-4 text-muted">{intro}</p>}

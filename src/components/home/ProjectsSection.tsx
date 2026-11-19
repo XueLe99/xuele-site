@@ -26,7 +26,7 @@ export async function ProjectsSection({ locale }: { locale: Locale }) {
       <div className="container-site">
         <header className="mb-8 md:mb-12">
           <p className="t-eyebrow mb-2">{t("eyebrow")}</p>
-          <h2 id="projects-title" className="t-h1">
+          <h2 id="projects-title" data-heading-mask className="t-h1">
             {t("title")}
           </h2>
         </header>

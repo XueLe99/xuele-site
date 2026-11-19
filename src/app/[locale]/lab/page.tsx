@@ -42,7 +42,7 @@ export default async function LabPage({ params }: PageProps<"/[locale]/lab">) {
             <p className="t-eyebrow mb-2">
               {String(i + 1).padStart(2, "0")} / {demo.file}
             </p>
-            <h2 id={`${demo.id}-title`} className="t-h2">
+            <h2 id={`${demo.id}-title`} data-heading-mask className="t-h2">
               {demo.title}
             </h2>
             <p className="t-body prose-measure mt-3 text-muted">{demo.explain}</p>

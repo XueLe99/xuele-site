@@ -48,7 +48,7 @@ export function ActHeading({
   return (
     <header className="mb-8 md:mb-12">
       <p className="t-eyebrow mb-2">{eyebrow}</p>
-      <h2 id={id} className="t-h1">
+      <h2 id={id} data-heading-mask className="t-h1">
         {title}
       </h2>
     </header>

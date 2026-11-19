@@ -15,6 +15,7 @@ export async function ContactAct({ locale }: { locale: Locale }) {
       <p className="t-eyebrow mb-2">{t("eyebrow")}</p>
       <h2
         id="contact-title"
+        data-heading-mask
         className={`t-display ${locale === "en" ? "font-display" : ""}`}
       >
         {t("big")}
