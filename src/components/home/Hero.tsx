@@ -57,7 +57,14 @@ export async function Hero({ locale }: { locale: Locale }) {
         <p data-hero-line style={order(2)} className="t-h3 mt-8 text-primary md:t-h2">
           {t("headline")}
         </p>
-        <p data-hero-line style={order(3)} className="mt-2 font-mono text-sm text-muted">
+        {/* Role line: decoded by <RoleDecode />, settles on the body text colour. */}
+        <p
+          data-hero-line
+          data-role-decode
+          data-intro-hold
+          style={order(3)}
+          className="mt-2 font-mono text-sm text-text"
+        >
           {t("identity")}
         </p>
         <p
