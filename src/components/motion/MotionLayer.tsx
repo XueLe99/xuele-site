@@ -5,6 +5,7 @@ import { Counters } from "./Counters";
 import { CursorRing } from "./CursorRing";
 import { HeadingMasks } from "./HeadingMasks";
 import { MagneticButtons } from "./MagneticButtons";
+import { RouteCurtain } from "./RouteCurtain";
 
 /**
  * Site-wide GSAP effects, mounted once in the locale layout so they survive
@@ -19,6 +20,7 @@ export function MotionLayer() {
       <MagneticButtons />
       <CardTilt />
       <CursorRing />
+      <RouteCurtain />
     </>
   );
 }
