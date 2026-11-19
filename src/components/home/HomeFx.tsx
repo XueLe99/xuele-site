@@ -17,7 +17,8 @@ import { resetSky, sky } from "@/lib/sky-store";
  * - gsap, ScrollTrigger, lenis and motion are dynamic imports, requested after
  *   window load + idle, so none of them is needed for first paint.
  *
- * The hero entrance (act 0) is CSS-only, see globals.css.
+ * The hero entrance (act 0) is CSS, see globals.css. The experience timeline,
+ * magnetic buttons and the other GSAP effects live in src/components/motion.
  */
 export function HomeFx() {
   const { fxOff } = useFx();
