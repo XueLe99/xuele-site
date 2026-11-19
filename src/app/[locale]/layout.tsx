@@ -67,6 +67,10 @@ export default async function LocaleLayout({
           suppressHydrationWarning
         />
         <script dangerouslySetInnerHTML={{ __html: noFlashScript }} />
+        {/* No JS: nothing will run the hero intro, so do not hold it back. */}
+        <noscript>
+          <style>{"[data-intro-hold]{animation:none!important}"}</style>
+        </noscript>
       </head>
       <body className="flex min-h-svh flex-col">
         <NextIntlClientProvider locale={locale} messages={clientMessages}>

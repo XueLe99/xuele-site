@@ -4,3 +4,47 @@
  * every rule is either decoration for an element the effect itself creates, or
  * a time-limited hold that ends on its own.
  */
+
+/* ------------------------------------------------------------------ */
+/* Hero intro hold (effects 1 + 6: TitleIntro, RoleDecode)              */
+/* ------------------------------------------------------------------ */
+/*
+ * The name, tagline and role line are animated in by GSAP ~0.6s after first
+ * paint. Until the effect takes over (`data-intro-live`) they are held
+ * invisible by an animation, not a declaration: it ends by itself after 2.5s,
+ * so the text shows up even if the script never runs. Not applied with reduced
+ * motion, with effects off (`[data-fx="off"]` kills all animations) or without
+ * JavaScript (<noscript> override in the layout).
+ */
+@media (prefers-reduced-motion: no-preference) {
+  [data-intro-hold]:not([data-intro-live]) {
+    animation: intro-hold 2.5s linear;
+  }
+  [data-intro-hold][data-intro-live] {
+    animation: none;
+  }
+}
+@keyframes intro-hold {
+  from,
+  to {
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Effect 1 — TitleIntro: one-off sweep across the name                 */
+/* ------------------------------------------------------------------ */
+[data-title-name] {
+  position: relative;
+}
+.title-sweep {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: transparent;
+  background: linear-gradient(90deg, transparent, #6ee7f2, transparent) no-repeat -100%
+    0 / 30% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  opacity: 0.6;
+}
