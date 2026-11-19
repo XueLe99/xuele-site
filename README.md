@@ -15,6 +15,9 @@ All copy comes from the approved site copy; nothing on the site is invented.
 - **three + @react-three/fiber** (WebGL starfield), **GSAP ScrollTrigger**,
   **Lenis**, **Motion** — all loaded with dynamic `import()` after window load
   + idle; none of them is in the first-load JS
+- **GSAP motion layer** (`src/components/motion`, with `@gsap/react`,
+  SplitText and Flip) — `next/dynamic` client-only chunks, fetched after
+  hydration because the hero intro starts 0.6s after first paint
 - **@codesandbox/sandpack-react** — the editable lab demos; a separate chunk
   that only the lab page requests, and only when a demo scrolls into view
 - **shiki** — build-time syntax highlighting of the static code placeholders
@@ -134,7 +137,7 @@ inside `useGSAP()` so everything is reverted on unmount. Styles live in
 `src/app/motion.css`, one block per effect.
 
 Site-wide effects are mounted in `MotionLayer.tsx` (locale layout);
-homepage-only ones in `app/[locale]/page.tsx`. **To remove an effect, delete
+homepage-only ones in `HomeMotion.tsx` (home page). **To remove an effect, delete
 its component file and its mount line** — the hooks left in the markup do
 nothing on their own. Exceptions are noted in the last column.
 
