@@ -1,5 +1,6 @@
 "use client";
 
+import { Counters } from "./Counters";
 import { HeadingMasks } from "./HeadingMasks";
 
 /**
@@ -11,6 +12,7 @@ export function MotionLayer() {
   return (
     <>
       <HeadingMasks />
+      <Counters />
     </>
   );
 }
