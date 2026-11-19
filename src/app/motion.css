@@ -139,3 +139,24 @@ div.split-line-mask {
   box-shadow: 0 0 8px rgb(232 197 107 / 0.4);
   transform-origin: left center;
 }
+
+/* ------------------------------------------------------------------ */
+/* Effect 8 — ProjectsGallery (class added by the effect, desktop only) */
+/* ------------------------------------------------------------------ */
+.is-gallery {
+  overflow-x: clip;
+}
+.is-gallery [data-gallery-track] {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 32px;
+  /* Room for the active card's 1.04 scale. */
+  padding-block: 16px;
+  will-change: transform;
+}
+.is-gallery [data-gallery-track] > li {
+  flex: 0 0 420px;
+}
+.is-gallery [data-gallery-track] > li[data-active] > a {
+  border-color: #6ee7f2;
+}

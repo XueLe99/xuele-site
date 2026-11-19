@@ -8,6 +8,7 @@ import { LabPreview } from "@/components/home/LabPreview";
 import { ProjectsSection } from "@/components/home/ProjectsSection";
 import { Skills } from "@/components/home/Skills";
 import { WhoIAm } from "@/components/home/WhoIAm";
+import { ProjectsGallery } from "@/components/motion/ProjectsGallery";
 import { RoleDecode } from "@/components/motion/RoleDecode";
 import { ScrollStory } from "@/components/motion/ScrollStory";
 import { SkillTags } from "@/components/motion/SkillTags";
@@ -48,6 +49,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <RoleDecode />
       <ScrollStory />
       <SkillTags />
+      <ProjectsGallery />
     </>
   );
 }
