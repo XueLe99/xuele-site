@@ -160,3 +160,24 @@ div.split-line-mask {
 .is-gallery [data-gallery-track] > li[data-active] > a {
   border-color: #6ee7f2;
 }
+
+/* ------------------------------------------------------------------ */
+/* Effect 9 — LabFlip: ghost card + veil (both added by the effect)     */
+/* ------------------------------------------------------------------ */
+.lab-flip-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--bg);
+  opacity: 0;
+  pointer-events: none;
+}
+.lab-flip-ghost {
+  position: fixed;
+  z-index: 61;
+  margin: 0;
+  pointer-events: none;
+  transform-origin: 0 0;
+  transition: none;
+  will-change: transform, opacity;
+}

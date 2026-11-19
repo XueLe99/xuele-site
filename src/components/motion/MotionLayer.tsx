@@ -4,6 +4,7 @@ import { CardTilt } from "./CardTilt";
 import { Counters } from "./Counters";
 import { CursorRing } from "./CursorRing";
 import { HeadingMasks } from "./HeadingMasks";
+import { LabFlip } from "./LabFlip";
 import { MagneticButtons } from "./MagneticButtons";
 import { RouteCurtain } from "./RouteCurtain";
 
@@ -20,6 +21,8 @@ export function MotionLayer() {
       <MagneticButtons />
       <CardTilt />
       <CursorRing />
+      {/* LabFlip before RouteCurtain: the first to claim a link click wins. */}
+      <LabFlip />
       <RouteCurtain />
     </>
   );
