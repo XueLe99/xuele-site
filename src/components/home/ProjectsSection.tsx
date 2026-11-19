@@ -32,7 +32,7 @@ export async function ProjectsSection({ locale }: { locale: Locale }) {
         </header>
         <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
-            <li key={project.slug} className="flex">
+            <li key={project.slug} data-tilt className="flex">
               <Link
                 href={`/projects/${project.slug}`}
                 className="surface group flex w-full flex-col gap-3 p-6 hover:-translate-y-1 hover:border-primary"

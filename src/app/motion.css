@@ -58,3 +58,61 @@ div.split-line-mask {
   background-clip: text;
   opacity: 0.6;
 }
+
+/* ------------------------------------------------------------------ */
+/* Effect 4a — MagneticButtons                                          */
+/* ------------------------------------------------------------------ */
+/* While GSAP drives the transform, CSS must not transition it as well. */
+.is-magnetic {
+  transition-property: color, background-color, border-color, opacity;
+}
+
+/* ------------------------------------------------------------------ */
+/* Effect 4b — CardTilt: pointer highlight (added by the effect)        */
+/* ------------------------------------------------------------------ */
+[data-tilt] {
+  position: relative;
+}
+.tilt-shell {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  pointer-events: none;
+}
+.tilt-glow {
+  position: absolute;
+  top: -160px;
+  left: -160px;
+  width: 320px;
+  height: 320px;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, var(--text), transparent);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* ------------------------------------------------------------------ */
+/* Effect 4c — CursorRing                                               */
+/* ------------------------------------------------------------------ */
+.cursor-ring {
+  position: fixed;
+  top: -24px;
+  left: -24px;
+  z-index: 90;
+  width: 48px;
+  height: 48px;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.cursor-ring svg {
+  display: block;
+  overflow: visible;
+}
+.cursor-ring circle {
+  fill: none;
+  stroke: #6ee7f2;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}

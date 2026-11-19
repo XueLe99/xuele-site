@@ -26,6 +26,7 @@ export async function Skills({ locale }: { locale: Locale }) {
             key={group.id}
             data-skill-card={group.id}
             data-story-block
+            data-tilt
             className={`surface flex min-w-0 flex-col gap-4 p-6 ${SPAN[group.id] ?? ""}`}
           >
             <div className="flex flex-wrap-reverse items-start justify-between gap-x-4 gap-y-2">

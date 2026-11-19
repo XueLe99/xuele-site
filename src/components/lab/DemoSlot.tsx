@@ -93,6 +93,7 @@ export function DemoSlot({
         <button
           type="button"
           className="demo-source"
+          data-magnetic
           aria-expanded={codeOpen}
           aria-controls={sourceId}
           onClick={toggleCode}

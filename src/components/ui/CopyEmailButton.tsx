@@ -54,6 +54,7 @@ export function CopyEmailButton({
       type="button"
       className={className}
       onClick={onClick}
+      data-magnetic
       data-copied={copied || undefined}
     >
       {copied ? <CheckIcon /> : <CopyIcon />}

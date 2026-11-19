@@ -810,15 +810,6 @@ html.lenis body {
   box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
-/* Act 5 — magnetic button: HomeFx sets `translate` (≤6px), CSS eases it. */
-[data-magnetic] {
-  transition:
-    color 180ms ease-out,
-    background-color 180ms ease-out,
-    transform 200ms var(--ease-out),
-    translate 200ms var(--ease-out);
-}
-
 /* ------------------------------------------------------------------ */
 /* Motion preferences                                                  */
 /* ------------------------------------------------------------------ */

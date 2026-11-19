@@ -63,7 +63,7 @@ export default async function AboutPage({
             </p>
           ))}
           <div className="mt-4 flex flex-wrap gap-3">
-            <a href={RESUME[locale]} download className="btn btn-primary">
+            <a href={RESUME[locale]} download data-magnetic className="btn btn-primary">
               <DownloadIcon />
               {c("downloadResume")}
             </a>

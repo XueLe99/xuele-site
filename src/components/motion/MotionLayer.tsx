@@ -1,7 +1,10 @@
 "use client";
 
+import { CardTilt } from "./CardTilt";
 import { Counters } from "./Counters";
+import { CursorRing } from "./CursorRing";
 import { HeadingMasks } from "./HeadingMasks";
+import { MagneticButtons } from "./MagneticButtons";
 
 /**
  * Site-wide GSAP effects, mounted once in the locale layout so they survive
@@ -13,6 +16,9 @@ export function MotionLayer() {
     <>
       <HeadingMasks />
       <Counters />
+      <MagneticButtons />
+      <CardTilt />
+      <CursorRing />
     </>
   );
 }

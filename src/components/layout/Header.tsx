@@ -15,7 +15,7 @@ export function Header() {
   const locale = useLocale();
 
   const resume = (
-    <a href={RESUME[locale]} download className="btn btn-primary btn-sm">
+    <a href={RESUME[locale]} download data-magnetic className="btn btn-primary btn-sm">
       <DownloadIcon />
       {t("resume")}
     </a>

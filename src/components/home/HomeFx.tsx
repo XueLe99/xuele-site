@@ -208,29 +208,6 @@ export function HomeFx() {
         });
       }
 
-      /* ------------- Act 5: magnetic primary button (≤6px, desktop) ------------ */
-      if (desktop) {
-        const MAX = 6;
-        document.querySelectorAll<HTMLElement>("[data-magnetic]").forEach((el) => {
-          const move = (e: PointerEvent) => {
-            const rect = el.getBoundingClientRect();
-            const dx = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
-            const dy = (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
-            const clamp = (n: number) => Math.max(-1, Math.min(1, n)) * MAX;
-            // `translate` composes with the hover transform; CSS eases it.
-            el.style.translate = `${clamp(dx).toFixed(2)}px ${clamp(dy).toFixed(2)}px`;
-          };
-          const leave = () => el.style.removeProperty("translate");
-          el.addEventListener("pointermove", move);
-          el.addEventListener("pointerleave", leave);
-          cleanups.push(() => {
-            el.removeEventListener("pointermove", move);
-            el.removeEventListener("pointerleave", leave);
-            leave();
-          });
-        });
-      }
-
       // Fonts / late layout can move the acts: measure once more.
       ScrollTrigger.refresh();
     });
