@@ -13,6 +13,10 @@ const MAX_TILT = 6;
  * perspective, and a soft highlight (opacity 0.12) follows the pointer. The
  * highlight is an element this effect adds and removes itself; it is moved
  * with transforms only.
+ *
+ * `data-tilt` must sit on an element no other effect transforms (scroll story
+ * blocks, gallery cards): two GSAP contexts reverting the same element's
+ * transform would restore each other's intermediate state.
  */
 export function CardTilt() {
   const ready = usePointerFx();

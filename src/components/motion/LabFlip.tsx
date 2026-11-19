@@ -113,6 +113,8 @@ export function LabFlip() {
         ghost.removeAttribute("href");
         ghost.setAttribute("aria-hidden", "true");
         ghost.classList.add("lab-flip-ghost");
+        // Not part of the card: the tilt effect's pointer highlight.
+        ghost.querySelector(".tilt-shell")?.remove();
         Object.assign(ghost.style, {
           left: `${rect.left}px`,
           top: `${rect.top}px`,
