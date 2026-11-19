@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { SplitText } from "gsap/SplitText";
 import { gsap, useGSAP } from "./gsap";
 import { introStart, nameIntroDuration, releaseHold } from "./hero-clock";
+import { SPLIT_CLASSES, charLefts } from "./split";
 import { useMotion } from "./useMotion";
 
 gsap.registerPlugin(SplitText);
@@ -59,12 +60,20 @@ export function TitleIntro() {
         );
       });
 
-      const split = SplitText.create(name, { type: "words,chars" });
+      // Measure, split, measure again: `x` puts every glyph back where the
+      // kerned, unsplit text had it (reads before writes).
+      const kerned = charLefts(name);
+      const split = SplitText.create(name, { type: "words,chars", ...SPLIT_CLASSES });
+      const shift = split.chars.map(
+        (el, i) => (kerned[i] ?? 0) - el.getBoundingClientRect().left,
+      );
+      const exact = kerned.length === split.chars.length;
       const blur = desktop;
       gsap.fromTo(
         split.chars,
         { y: 40, opacity: 0, ...(blur && { filter: "blur(8px)" }) },
         {
+          x: (i) => (exact ? shift[i] : 0),
           y: 0,
           opacity: 1,
           ...(blur && { filter: "blur(0px)" }),
@@ -86,6 +95,7 @@ export function TitleIntro() {
         // autoSplit: lines are re-measured when the web fonts arrive.
         SplitText.create(tagline, {
           type: "lines",
+          ...SPLIT_CLASSES,
           autoSplit: true,
           onSplit(self) {
             return gsap.from(self.lines, {

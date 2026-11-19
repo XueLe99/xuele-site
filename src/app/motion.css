@@ -6,6 +6,16 @@
  */
 
 /* ------------------------------------------------------------------ */
+/* SplitText wrappers (effects 1, 6, 7): keep the split text's metrics   */
+/* ------------------------------------------------------------------ */
+div.split-char,
+div.split-word,
+div.split-line,
+div.split-line-mask {
+  line-height: inherit;
+}
+
+/* ------------------------------------------------------------------ */
 /* Hero intro hold (effects 1 + 6: TitleIntro, RoleDecode)              */
 /* ------------------------------------------------------------------ */
 /*
