@@ -1,0 +1,6 @@
+/*
+ * GSAP motion layer (src/components/motion). One block per effect; a block can
+ * be deleted together with its component. Nothing here hides content for good:
+ * every rule is either decoration for an element the effect itself creates, or
+ * a time-limited hold that ends on its own.
+ */

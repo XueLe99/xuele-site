@@ -5,6 +5,7 @@ import { Background } from "@/components/background/Background";
 import { FxProvider } from "@/components/fx/FxProvider";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { MotionLayer } from "@/components/motion/MotionLayer";
 import { PersonJsonLd } from "@/components/seo/PersonJsonLd";
 import { SITE_URL, THEME_COLOR } from "@/config";
 import { HTML_LANG, routing } from "@/i18n/routing";
@@ -13,6 +14,7 @@ import { noFlashScript } from "@/lib/no-flash";
 import { pageMetadata } from "@/lib/seo";
 import { fontVariables } from "../fonts";
 import "../globals.css";
+import "../motion.css";
 
 // Only /zh and /en exist; any other first segment is a 404 (global-not-found).
 export const dynamicParams = false;
@@ -81,6 +83,7 @@ export default async function LocaleLayout({
               {children}
             </main>
             <Footer />
+            <MotionLayer />
           </FxProvider>
         </NextIntlClientProvider>
         <PersonJsonLd locale={locale} />
