@@ -131,64 +131,6 @@ export function HomeFx() {
           },
         );
 
-        // Act 3: the star trail draws with scroll; nodes light when it reaches them.
-        const timeline = document.querySelector<HTMLElement>("[data-timeline]");
-        const line = timeline?.querySelector<HTMLElement>("[data-timeline-line]");
-        if (timeline && line) {
-          const items = Array.from(
-            timeline.querySelectorAll<HTMLElement>("[data-timeline-item]"),
-          );
-          const reached = (progress: number) => {
-            const length = line.offsetHeight || 1;
-            items.forEach((item) => {
-              const node = item.querySelector<HTMLElement>("[data-timeline-node]");
-              if (!node) return;
-              const at =
-                item.offsetTop + node.offsetTop + node.offsetHeight / 2 - line.offsetTop;
-              const lit = progress * length >= at - 1;
-              node.toggleAttribute("data-lit", lit);
-              // Items rise in once and then stay.
-              if (lit) item.setAttribute("data-shown", "");
-            });
-          };
-          // Entries already scrolled past stay visible (no flash on reload mid-page).
-          items.forEach((item) => {
-            if (item.getBoundingClientRect().top < window.innerHeight * 0.85) {
-              item.setAttribute("data-shown", "");
-            }
-          });
-          timeline.classList.add("is-fx");
-          gsap.fromTo(
-            line,
-            { scaleY: 0 },
-            {
-              scaleY: 1,
-              ease: "none",
-              scrollTrigger: {
-                // The trail is fully drawn (last node lit) by the time the
-                // whole act is in view, not only after it has half left.
-                trigger: timeline,
-                start: "top 85%",
-                endTrigger: timeline.closest("[data-act]") ?? timeline,
-                end: "bottom bottom",
-                scrub: 0.8,
-              },
-              onUpdate() {
-                reached(this.progress());
-              },
-            },
-          );
-          cleanups.push(() => {
-            timeline.classList.remove("is-fx");
-            items.forEach((item) => {
-              item.removeAttribute("data-shown");
-              item
-                .querySelector("[data-timeline-node]")
-                ?.removeAttribute("data-lit");
-            });
-          });
-        }
-
         // Act 4: stars dim to 40%, nebula and meteors pause.
         ScrollTrigger.create({
           trigger: "#act-4",

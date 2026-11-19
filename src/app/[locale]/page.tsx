@@ -9,6 +9,7 @@ import { ProjectsSection } from "@/components/home/ProjectsSection";
 import { Skills } from "@/components/home/Skills";
 import { WhoIAm } from "@/components/home/WhoIAm";
 import { RoleDecode } from "@/components/motion/RoleDecode";
+import { ScrollStory } from "@/components/motion/ScrollStory";
 import { SkillTags } from "@/components/motion/SkillTags";
 import { TitleIntro } from "@/components/motion/TitleIntro";
 import { resolveLocale } from "@/lib/locale";
@@ -45,6 +46,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       {/* GSAP motion layer: one component per effect, each removable on its own. */}
       <TitleIntro />
       <RoleDecode />
+      <ScrollStory />
       <SkillTags />
     </>
   );

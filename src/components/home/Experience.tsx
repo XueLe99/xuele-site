@@ -5,8 +5,9 @@ import { Act, ActHeading } from "./Act";
 
 /**
  * Act 3. Reverse-chronological timeline ("star trail").
- * `[data-timeline-line]` (scaleY scrub) and `[data-timeline-node]` (light up)
- * are animated by HomeFx.tsx; statically everything is drawn and lit.
+ * `[data-timeline-stroke]` (stroke-dashoffset scrub), `[data-timeline-node]`
+ * (pop) and the `[data-story-block]` entries are animated by
+ * motion/ScrollStory.tsx; statically everything is drawn and visible.
  */
 export async function Experience({ locale }: { locale: Locale }) {
   const t = await getTranslations({ locale, namespace: "experience" });
@@ -20,16 +21,42 @@ export async function Experience({ locale }: { locale: Locale }) {
         title={t("title")}
       />
       <div className="relative max-w-3xl" data-timeline>
-        <div
+        <svg
           aria-hidden="true"
-          data-timeline-line
-          className="absolute top-2 bottom-2 left-[7px] w-px origin-top bg-gradient-to-b from-accent via-primary to-transparent opacity-60"
-        />
+          className="absolute top-2 left-[7px] h-[calc(100%-16px)] w-px overflow-visible opacity-60"
+        >
+          <defs>
+            {/* userSpaceOnUse: a straight line has no bounding box to map onto. */}
+            <linearGradient
+              id="timeline-stroke"
+              gradientUnits="userSpaceOnUse"
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="100%"
+            >
+              <stop offset="0" stopColor="var(--accent)" />
+              <stop offset="0.5" stopColor="var(--primary)" />
+              <stop offset="1" stopColor="var(--primary)" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          <line
+            data-timeline-stroke
+            x1="0.5"
+            y1="0"
+            x2="0.5"
+            y2="100%"
+            pathLength={1}
+            stroke="url(#timeline-stroke)"
+            strokeWidth="1"
+          />
+        </svg>
         <ol className="flex flex-col gap-12">
           {items.map((item) => (
             <li
               key={item.id}
               data-timeline-item={item.id}
+              data-story-block
               className="relative pl-10"
             >
               <span
