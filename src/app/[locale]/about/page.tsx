@@ -63,7 +63,7 @@ export default async function AboutPage({
             </p>
           ))}
           <div className="mt-4 flex flex-wrap gap-3">
-            <a href={RESUME[locale]} download className="btn btn-primary">
+            <a href={RESUME[locale]} download data-magnetic className="btn btn-primary">
               <DownloadIcon />
               {c("downloadResume")}
             </a>
@@ -75,19 +75,19 @@ export default async function AboutPage({
 
         <aside className="flex flex-col gap-10">
           <section aria-labelledby="about-work">
-            <h2 id="about-work" className="t-h2 mb-4">
+            <h2 id="about-work" data-heading-mask className="t-h2 mb-4">
               {e("workTitle")}
             </h2>
             <EntryList items={work} />
           </section>
           <section aria-labelledby="about-education">
-            <h2 id="about-education" className="t-h2 mb-4">
+            <h2 id="about-education" data-heading-mask className="t-h2 mb-4">
               {e("educationTitle")}
             </h2>
             <EntryList items={education} />
           </section>
           <section aria-labelledby="about-languages">
-            <h2 id="about-languages" className="t-h2 mb-4">
+            <h2 id="about-languages" data-heading-mask className="t-h2 mb-4">
               {t("languagesTitle")}
             </h2>
             <ul className="flex flex-wrap gap-2">

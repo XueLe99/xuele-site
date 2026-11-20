@@ -15,6 +15,9 @@ All copy comes from the approved site copy; nothing on the site is invented.
 - **three + @react-three/fiber** (WebGL starfield), **GSAP ScrollTrigger**,
   **Lenis**, **Motion** — all loaded with dynamic `import()` after window load
   + idle; none of them is in the first-load JS
+- **GSAP motion layer** (`src/components/motion`, with `@gsap/react`,
+  SplitText and Flip) — `next/dynamic` client-only chunks, fetched after
+  hydration because the hero intro starts 0.6s after first paint
 - **@codesandbox/sandpack-react** — the editable lab demos; a separate chunk
   that only the lab page requests, and only when a demo scrolls into view
 - **shiki** — build-time syntax highlighting of the static code placeholders
@@ -115,16 +118,61 @@ effects off nothing runs.
 
 | Act | Effect                                                                                          | Tech                          |
 | --- | ----------------------------------------------------------------------------------------------- | ----------------------------- |
-| 0   | Mask-reveal lines (500ms / 80ms stagger), chips fade (40ms stagger)                             | CSS only (`globals.css`)      |
+| 0   | Mask-reveal lines (500ms / 80ms stagger), chips fade (40ms stagger); name, tagline and role line: see the motion layer | CSS (`globals.css`) + GSAP    |
 | 1   | Phrases light up muted → text (`--lit`), camera push                                            | ScrollTrigger scrub           |
 | 2   | Constellation lines draw (600ms), stars light accent; chip ↔ star hover highlight               | Motion `inView` + `animate`   |
-| 3   | Star-trail line `scaleY` scrub (complete when the act's bottom enters the viewport), nodes light when reached, entries fade + rise 16px | ScrollTrigger + CSS           |
+| 3   | Star-trail stroke draws with scroll, nodes pop when reached, entries cross-fade (`motion/ScrollStory.tsx`) | ScrollTrigger                 |
 | 4   | Stars dim                                                                                       | ScrollTrigger → sky store     |
-| 5   | Stars gather; magnetic primary button (≤6px)                                                    | ScrollTrigger, pointer events |
+| 5   | Stars gather                                                                                    | ScrollTrigger → sky store     |
 
 Lenis smooth scrolling runs on the homepage for desktop fine pointers only and
-is driven by the GSAP ticker. The act 2 draw-in and the magnetic button are
-desktop-only as well; on touch devices constellations are simply drawn.
+is driven by the GSAP ticker. The act 2 draw-in is desktop-only as well; on
+touch devices constellations are simply drawn.
+
+## GSAP motion layer
+
+`src/components/motion/` holds one component per effect. Each renders nothing
+(or only its own overlay), finds its targets through `data-*` hooks, and runs
+inside `useGSAP()` so everything is reverted on unmount. Styles live in
+`src/app/motion.css`, one block per effect.
+
+Site-wide effects are mounted in `MotionLayer.tsx` (locale layout);
+homepage-only ones in `HomeMotion.tsx` (home page). **To remove an effect, delete
+its component file and its mount line** — the hooks left in the markup do
+nothing on their own. Exceptions are noted in the last column.
+
+| #  | Effect                                   | Component               | Mounted in    | Also remove                                                        |
+| -- | ---------------------------------------- | ----------------------- | ------------- | ------------------------------------------------------------------ |
+| 1  | Hero name / tagline intro + sweep        | `TitleIntro.tsx`        | home page     | `data-intro-hold` on the name and tagline in `Hero.tsx`            |
+| 2  | Pinned scroll story, timeline draw       | `ScrollStory.tsx`       | home page     | —                                                                  |
+| 3  | Count-up numbers / skill tag pop         | `Counters.tsx` / `SkillTags.tsx` | layout / home page | —                                                    |
+| 4  | Magnetic buttons / card tilt / cursor ring | `MagneticButtons.tsx` / `CardTilt.tsx` / `CursorRing.tsx` | layout | —                                          |
+| 5  | Route curtain                            | `RouteCurtain.tsx`      | layout        | `LabFlip.tsx` imports its `internalDestination()` helper           |
+| 6  | Role line decode                         | `RoleDecode.tsx`        | home page     | `data-intro-hold` on the role line in `Hero.tsx`                   |
+| 7  | Section heading line masks               | `HeadingMasks.tsx`      | layout        | —                                                                  |
+| 8  | Projects horizontal gallery              | `ProjectsGallery.tsx`   | home page     | —                                                                  |
+| 9  | Lab card → demo Flip                     | `LabFlip.tsx`           | layout        | —                                                                  |
+
+`data-intro-hold` keeps the hero name, tagline and role line invisible until
+their intro starts. It is a 2.5s CSS animation, not a declaration: if the
+script never runs the text appears by itself, and a `<noscript>` rule disables
+the hold entirely.
+
+Rules the layer follows:
+
+- **Reduced motion / Effects off:** `useMotion()` returns `enabled: false`, the
+  GSAP context is reverted and nothing runs. The server markup + CSS is the
+  final state, so no content depends on JavaScript to become visible.
+- **Mobile** (`<768px` or coarse pointer): no pinning, no pointer effects, no
+  curtain, no gallery, no Lab Flip; the intro runs without blur and the
+  decode / count-up / tag pop are shortened.
+- **Performance:** transforms and opacity only, except where an effect is
+  defined by another property (hero blur, sweep `background-position`,
+  `stroke-dashoffset`). Pointer effects attach after window load + idle and
+  never during the hero particle intro (`src/lib/hero-intro.ts`).
+- **Cross-route Flip:** a shared element cannot survive an App Router
+  navigation, so `LabFlip` flies a clone of the card onto the demo slot with
+  `Flip.fit()` while a veil cross-fades into the Lab page.
 
 ## Hooks
 
@@ -133,10 +181,15 @@ desktop-only as well; on touch devices constellations are simply drawn.
 | `[data-starfield-slot]` (`data-tier`) inside `<Background />` | `src/components/background`         | Canvas-2D / WebGL starfield       |
 | `#act-0 … #act-5` with `data-act="act-N"`, `data-act-name`  | `src/components/home/Act.tsx`         | ScrollTrigger scenes              |
 | `[data-hero-line]`, `[data-hero-chip]`, `[data-scroll-hint]` | `Hero.tsx`                            | Hero entrance (CSS)               |
+| `[data-title-name]`, `[data-title-tagline]`, `[data-role-decode]`, `[data-intro-hold]` | `Hero.tsx`  | Title intro, role decode          |
+| `[data-story-block]`                                        | `WhoIAm.tsx`, `Skills.tsx`, `Experience.tsx` | Scroll story cross-fade    |
+| `[data-heading-mask]`, `[data-count]`                       | `Act.tsx`, `PageShell.tsx`, pages     | Heading masks, count-up           |
+| `[data-tilt]`, `[data-lab-card]`                            | `Skills.tsx`, `LabPreview.tsx`, `ProjectsSection.tsx` | Card tilt, Lab Flip |
+| `[data-projects-gallery]`, `[data-gallery-track]`           | `ProjectsSection.tsx`                 | Projects gallery                  |
 | `[data-phrase]`                                             | `WhoIAm.tsx`                          | Phrase light-up on scroll         |
 | `[data-constellation-line]`, `[data-star]`, `[data-star-chip]` | `Constellation.tsx`, `Skills.tsx`  | Constellation draw + hover        |
-| `[data-timeline-line]`, `[data-timeline-node]`, `[data-timeline-item]` | `Experience.tsx`           | Star-trail timeline               |
-| `[data-magnetic]`, `[data-contact-target]`                  | `ContactAct.tsx`                      | Magnetic button, star gathering   |
+| `[data-timeline-stroke]`, `[data-timeline-node]`, `[data-timeline-item]` | `Experience.tsx`         | Star-trail timeline               |
+| `[data-magnetic]`, `[data-contact-target]`                  | buttons site-wide, `ContactAct.tsx`   | Magnetic buttons, star gathering  |
 | `[data-demo-slot="low-light" \| "kernel" \| "pathfinding"]` (`data-demo-state` = `static` / `loading` / `live`) | `src/components/lab/DemoSlot.tsx` | Sandpack demos |
 
 Everything is visible and complete without these enhancements.

@@ -36,6 +36,28 @@ export function Act({
   );
 }
 
+/**
+ * Eyebrow label. A leading number ("03 / experience") is wrapped in
+ * `[data-count]` so <Counters /> can count it up; the markup holds the final value.
+ */
+export function Eyebrow({ text }: { text: string }) {
+  const [, digits, rest] = /^(\d+)(.*)$/.exec(text) ?? [];
+  return (
+    <p className="t-eyebrow mb-2">
+      {digits ? (
+        <>
+          <span data-count className="tabular-nums">
+            {digits}
+          </span>
+          {rest}
+        </>
+      ) : (
+        text
+      )}
+    </p>
+  );
+}
+
 export function ActHeading({
   id,
   eyebrow,
@@ -47,8 +69,8 @@ export function ActHeading({
 }) {
   return (
     <header className="mb-8 md:mb-12">
-      <p className="t-eyebrow mb-2">{eyebrow}</p>
-      <h2 id={id} className="t-h1">
+      <Eyebrow text={eyebrow} />
+      <h2 id={id} data-heading-mask className="t-h1">
         {title}
       </h2>
     </header>

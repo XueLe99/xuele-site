@@ -60,7 +60,7 @@ export default async function ContactPage({
             </div>
           </dl>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href={`mailto:${EMAIL}`} className="btn btn-primary">
+            <a href={`mailto:${EMAIL}`} data-magnetic className="btn btn-primary">
               <MailIcon />
               {c("sendEmail")}
             </a>
@@ -78,13 +78,13 @@ export default async function ContactPage({
           </h2>
           <ul className="mt-6 flex flex-col items-start gap-3">
             <li>
-              <a href={RESUME.zh} download className="btn btn-secondary">
+              <a href={RESUME.zh} download data-magnetic className="btn btn-secondary">
                 <DownloadIcon />
                 {c("resumeZh")}
               </a>
             </li>
             <li>
-              <a href={RESUME.en} download className="btn btn-secondary">
+              <a href={RESUME.en} download data-magnetic className="btn btn-secondary">
                 <DownloadIcon />
                 {c("resumeEn")}
               </a>

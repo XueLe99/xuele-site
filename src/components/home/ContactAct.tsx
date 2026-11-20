@@ -3,18 +3,19 @@ import { EMAIL, RESUME } from "@/config";
 import { CopyEmailButton } from "@/components/ui/CopyEmailButton";
 import { DownloadIcon, MailIcon } from "@/components/ui/icons";
 import type { Locale } from "@/i18n/routing";
-import { Act } from "./Act";
+import { Act, Eyebrow } from "./Act";
 
-/** Act 5. `[data-magnetic]` marks the primary button for the magnetic hover (HomeFx). */
+/** Act 5. `[data-magnetic]` marks the buttons for motion/MagneticButtons.tsx. */
 export async function ContactAct({ locale }: { locale: Locale }) {
   const t = await getTranslations({ locale, namespace: "contact" });
   const c = await getTranslations({ locale, namespace: "common" });
 
   return (
     <Act name="contact" labelledBy="contact-title" className="py-24 md:py-40">
-      <p className="t-eyebrow mb-2">{t("eyebrow")}</p>
+      <Eyebrow text={t("eyebrow")} />
       <h2
         id="contact-title"
+        data-heading-mask
         className={`t-display ${locale === "en" ? "font-display" : ""}`}
       >
         {t("big")}
@@ -32,7 +33,7 @@ export async function ContactAct({ locale }: { locale: Locale }) {
           <DownloadIcon />
           {c("downloadResume")}
         </a>
-        <a href={`mailto:${EMAIL}`} className="btn btn-secondary">
+        <a href={`mailto:${EMAIL}`} data-magnetic className="btn btn-secondary">
           <MailIcon />
           <span className="font-mono">{EMAIL}</span>
         </a>

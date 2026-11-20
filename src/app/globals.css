@@ -810,41 +810,6 @@ html.lenis body {
   box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
-/* Act 3 — star trail. `.is-fx` is added by HomeFx once ScrollTrigger is running. */
-.is-fx [data-timeline-node],
-.is-fx [data-timeline-node] > span {
-  transition:
-    background-color 300ms ease-out,
-    box-shadow 300ms ease-out;
-}
-.is-fx [data-timeline-node]:not([data-lit]) {
-  background-color: color-mix(in srgb, var(--muted) 20%, transparent);
-}
-.is-fx [data-timeline-node]:not([data-lit]) > span {
-  background-color: var(--muted);
-}
-.is-fx [data-timeline-node][data-lit] {
-  box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 55%, transparent);
-}
-.is-fx [data-timeline-item] > :not([data-timeline-node]) {
-  transition:
-    opacity 400ms var(--ease-out),
-    transform 400ms var(--ease-out);
-}
-.is-fx [data-timeline-item]:not([data-shown]) > :not([data-timeline-node]) {
-  opacity: 0;
-  transform: translateY(16px);
-}
-
-/* Act 5 — magnetic button: HomeFx sets `translate` (≤6px), CSS eases it. */
-[data-magnetic] {
-  transition:
-    color 180ms ease-out,
-    background-color 180ms ease-out,
-    transform 200ms var(--ease-out),
-    translate 200ms var(--ease-out);
-}
-
 /* ------------------------------------------------------------------ */
 /* Motion preferences                                                  */
 /* ------------------------------------------------------------------ */

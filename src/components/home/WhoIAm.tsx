@@ -18,6 +18,7 @@ export async function WhoIAm({ locale }: { locale: Locale }) {
       <ActHeading id="who-title" eyebrow={t("eyebrow")} title={t("title")} />
       <p
         data-phrases
+        data-story-block
         className="max-w-3xl text-[20px] leading-[1.8] md:text-[24px] md:leading-[1.7]"
       >
         {phrases.map((phrase, i) => (
@@ -29,6 +30,7 @@ export async function WhoIAm({ locale }: { locale: Locale }) {
       </p>
       <Link
         href="/about"
+        data-story-block
         className="link mt-8 inline-flex h-11 items-center gap-2"
       >
         {t("more")}

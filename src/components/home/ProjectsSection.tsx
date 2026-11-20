@@ -8,6 +8,8 @@ import type { Locale } from "@/i18n/routing";
 /**
  * Projects grid for the homepage. Hidden (renders nothing) unless
  * SHOW_PROJECTS is true and at least one project is published.
+ * On desktop motion/ProjectsGallery.tsx turns the grid into a pinned
+ * horizontal gallery; this markup is the plain list everyone else gets.
  */
 export async function ProjectsSection({ locale }: { locale: Locale }) {
   if (!SHOW_PROJECTS) return null;
@@ -20,21 +22,23 @@ export async function ProjectsSection({ locale }: { locale: Locale }) {
     <section
       id="projects"
       data-section="projects"
+      data-projects-gallery
       aria-labelledby="projects-title"
       className="relative py-24 md:py-32"
     >
       <div className="container-site">
         <header className="mb-8 md:mb-12">
           <p className="t-eyebrow mb-2">{t("eyebrow")}</p>
-          <h2 id="projects-title" className="t-h1">
+          <h2 id="projects-title" data-heading-mask className="t-h1">
             {t("title")}
           </h2>
         </header>
-        <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <ul data-gallery-track className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
             <li key={project.slug} className="flex">
               <Link
                 href={`/projects/${project.slug}`}
+                data-tilt
                 className="surface group flex w-full flex-col gap-3 p-6 hover:-translate-y-1 hover:border-primary"
               >
                 {project.period && (

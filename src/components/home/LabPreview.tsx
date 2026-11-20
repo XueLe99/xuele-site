@@ -17,7 +17,7 @@ export async function LabPreview({ locale }: { locale: Locale }) {
 
       <ul className="mt-10 grid gap-4 md:grid-cols-3">
         {demos.map((demo) => (
-          <li key={demo.id} data-lab-card={demo.id} className="flex">
+          <li key={demo.id} data-lab-card={demo.id} data-tilt className="flex">
             <Link
               href={`/lab#${demo.id}`}
               className="surface group flex w-full flex-col overflow-hidden hover:-translate-y-1 hover:border-primary"

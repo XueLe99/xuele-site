@@ -12,8 +12,9 @@ const order = (i: number) => ({ "--i": i }) as CSSProperties;
 
 /**
  * Act 0. Fully static HTML; the name heading is the LCP element.
- * The entrance is pure CSS (`@keyframes hero-line` / `hero-chip`): no JS, no
- * hidden SSR state, and the name is partly painted from the very first frame.
+ * The entrance of the supporting lines is pure CSS (`@keyframes hero-line` /
+ * `hero-chip`). The name and tagline (`data-title-*`) are animated by
+ * <TitleIntro />; `data-intro-hold` keeps them back until it starts (motion.css).
  * <HeroFx /> adds the particle layer behind it on the client, after load.
  */
 export async function Hero({ locale }: { locale: Locale }) {
@@ -33,6 +34,8 @@ export async function Hero({ locale }: { locale: Locale }) {
         <h1
           id="hero-name"
           data-hero-line
+          data-title-name
+          data-intro-hold
           style={order(0)}
           className={`t-display ${en ? "font-display" : ""}`}
         >
@@ -54,10 +57,23 @@ export async function Hero({ locale }: { locale: Locale }) {
         <p data-hero-line style={order(2)} className="t-h3 mt-8 text-primary md:t-h2">
           {t("headline")}
         </p>
-        <p data-hero-line style={order(3)} className="mt-2 font-mono text-sm text-muted">
+        {/* Role line: decoded by <RoleDecode />, settles on the body text colour. */}
+        <p
+          data-hero-line
+          data-role-decode
+          data-intro-hold
+          style={order(3)}
+          className="mt-2 font-mono text-sm text-text"
+        >
           {t("identity")}
         </p>
-        <p data-hero-line style={order(4)} className="t-body prose-measure mt-6 text-muted">
+        <p
+          data-hero-line
+          data-title-tagline
+          data-intro-hold
+          style={order(4)}
+          className="t-body prose-measure mt-6 text-muted"
+        >
           {t("tagline")}
         </p>
 
@@ -70,7 +86,7 @@ export async function Hero({ locale }: { locale: Locale }) {
         </ul>
 
         <div className="mt-10 flex flex-wrap gap-3">
-          <a href={RESUME[locale]} download className="btn btn-primary">
+          <a href={RESUME[locale]} download data-magnetic className="btn btn-primary">
             <DownloadIcon />
             {c("downloadResume")}
           </a>

@@ -1,0 +1,183 @@
+/*
+ * GSAP motion layer (src/components/motion). One block per effect; a block can
+ * be deleted together with its component. Nothing here hides content for good:
+ * every rule is either decoration for an element the effect itself creates, or
+ * a time-limited hold that ends on its own.
+ */
+
+/* ------------------------------------------------------------------ */
+/* SplitText wrappers (effects 1, 6, 7): keep the split text's metrics   */
+/* ------------------------------------------------------------------ */
+div.split-char,
+div.split-word,
+div.split-line,
+div.split-line-mask {
+  line-height: inherit;
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero intro hold (effects 1 + 6: TitleIntro, RoleDecode)              */
+/* ------------------------------------------------------------------ */
+/*
+ * The name, tagline and role line are animated in by GSAP ~0.6s after first
+ * paint. Until the effect takes over (`data-intro-live`) they are held
+ * invisible by an animation, not a declaration: it ends by itself after 2.5s,
+ * so the text shows up even if the script never runs. Not applied with reduced
+ * motion, with effects off (`[data-fx="off"]` kills all animations) or without
+ * JavaScript (<noscript> override in the layout).
+ */
+@media (prefers-reduced-motion: no-preference) {
+  [data-intro-hold]:not([data-intro-live]) {
+    animation: intro-hold 2.5s linear;
+  }
+  [data-intro-hold][data-intro-live] {
+    animation: none;
+  }
+}
+@keyframes intro-hold {
+  from,
+  to {
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Effect 1 — TitleIntro: one-off sweep across the name                 */
+/* ------------------------------------------------------------------ */
+[data-title-name] {
+  position: relative;
+}
+.title-sweep {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: transparent;
+  background: linear-gradient(90deg, transparent, #6ee7f2, transparent) no-repeat -100%
+    0 / 30% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  opacity: 0.6;
+}
+
+/* ------------------------------------------------------------------ */
+/* Effect 4a — MagneticButtons                                          */
+/* ------------------------------------------------------------------ */
+/* While GSAP drives the transform, CSS must not transition it as well. */
+.is-magnetic {
+  transition-property: color, background-color, border-color, opacity;
+}
+
+/* ------------------------------------------------------------------ */
+/* Effect 4b — CardTilt: pointer highlight (added by the effect)        */
+/* ------------------------------------------------------------------ */
+[data-tilt] {
+  position: relative;
+}
+.tilt-shell {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  pointer-events: none;
+}
+.tilt-glow {
+  position: absolute;
+  top: -160px;
+  left: -160px;
+  width: 320px;
+  height: 320px;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, var(--text), transparent);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* ------------------------------------------------------------------ */
+/* Effect 4c — CursorRing                                               */
+/* ------------------------------------------------------------------ */
+.cursor-ring {
+  position: fixed;
+  top: -24px;
+  left: -24px;
+  z-index: 90;
+  width: 48px;
+  height: 48px;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.cursor-ring svg {
+  display: block;
+  overflow: visible;
+}
+.cursor-ring circle {
+  fill: none;
+  stroke: #6ee7f2;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ------------------------------------------------------------------ */
+/* Effect 5 — RouteCurtain                                              */
+/* ------------------------------------------------------------------ */
+.route-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: #070a12;
+  visibility: hidden;
+  transform: scaleX(0);
+  will-change: transform;
+}
+.route-curtain-edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  background: #e8c56b;
+  box-shadow: 0 0 8px rgb(232 197 107 / 0.4);
+  transform-origin: left center;
+}
+
+/* ------------------------------------------------------------------ */
+/* Effect 8 — ProjectsGallery (class added by the effect, desktop only) */
+/* ------------------------------------------------------------------ */
+.is-gallery {
+  overflow-x: clip;
+}
+.is-gallery [data-gallery-track] {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 32px;
+  /* Room for the active card's 1.04 scale. */
+  padding-block: 16px;
+  will-change: transform;
+}
+.is-gallery [data-gallery-track] > li {
+  flex: 0 0 420px;
+}
+.is-gallery [data-gallery-track] > li[data-active] > a {
+  border-color: #6ee7f2;
+}
+
+/* ------------------------------------------------------------------ */
+/* Effect 9 — LabFlip: ghost card + veil (both added by the effect)     */
+/* ------------------------------------------------------------------ */
+.lab-flip-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--bg);
+  opacity: 0;
+  pointer-events: none;
+}
+.lab-flip-ghost {
+  position: fixed;
+  z-index: 61;
+  margin: 0;
+  pointer-events: none;
+  transform-origin: 0 0;
+  transition: none;
+  will-change: transform, opacity;
+}

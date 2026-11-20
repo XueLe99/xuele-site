@@ -29,6 +29,8 @@ export interface AntigravityProps {
   interactive?: boolean;
   clickBurst?: boolean;
   intro?: boolean;
+  /** Called once when the intro (first 3s after mount) has finished. */
+  onIntroEnd?: () => void;
   lightMode?: boolean;
   opacity?: number;
   maxDevicePixelRatio?: number;
@@ -60,6 +62,7 @@ interface Settings {
   interactive: boolean;
   clickBurst: boolean;
   intro: boolean;
+  onIntroEnd?: () => void;
   light: boolean;
   opacity: number;
   maxRatio: number;
@@ -385,6 +388,7 @@ const Antigravity = ({
   interactive = true,
   clickBurst = true,
   intro = true,
+  onIntroEnd,
   lightMode = false,
   opacity = 1,
   maxDevicePixelRatio = 2,
@@ -421,6 +425,7 @@ const Antigravity = ({
     interactive,
     clickBurst,
     intro,
+    onIntroEnd,
     light: lightMode,
     opacity: clamp(opacity, 0, 1),
     maxRatio: clamp(maxDevicePixelRatio, 0.5, 3)
@@ -713,7 +718,10 @@ const Antigravity = ({
       const pace = reduced ? 0.3 : 1;
       time += dt * pace;
       hue += dt * s.colorSpeed * pace;
-      if (introClock < 3) introClock += dt;
+      if (introClock < 3) {
+        introClock += dt;
+        if (introClock >= 3) settingsRef.current.onIntroEnd?.();
+      }
       charge = pointer.down ? Math.min(1, charge + dt / 0.9) : Math.max(0, charge - dt * 4);
 
       const idle = performance.now() - pointer.moved > 2000 || !pointer.inside;

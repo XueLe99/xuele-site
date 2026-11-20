@@ -8,6 +8,7 @@ import { LabPreview } from "@/components/home/LabPreview";
 import { ProjectsSection } from "@/components/home/ProjectsSection";
 import { Skills } from "@/components/home/Skills";
 import { WhoIAm } from "@/components/home/WhoIAm";
+import { HomeMotion } from "@/components/motion/HomeMotion";
 import { resolveLocale } from "@/lib/locale";
 import { pageMetadata } from "@/lib/seo";
 
@@ -39,6 +40,8 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <LabPreview locale={locale} />
       <ContactAct locale={locale} />
       <HomeFx />
+      {/* GSAP motion layer: one component per effect, each removable on its own. */}
+      <HomeMotion />
     </>
   );
 }

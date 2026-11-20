@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { useWebglFx } from "@/components/fx/useWebglFx";
+import { setHeroIntro } from "@/lib/hero-intro";
 import { sky } from "@/lib/sky-store";
 
 // React Bits Antigravity (src/components/Antigravity.tsx): its own chunk,
@@ -54,6 +55,19 @@ export function HeroFx() {
     };
   }, [active]);
 
+  // Pointer effects (motion/usePointerFx) stay detached while the intro plays.
+  // The timeout covers a canvas that never starts (chunk error, lost context).
+  const introPlaying = active && !seen;
+  useEffect(() => {
+    if (!introPlaying) return;
+    setHeroIntro(true);
+    const timer = window.setTimeout(() => setHeroIntro(false), 8000);
+    return () => {
+      window.clearTimeout(timer);
+      setHeroIntro(false);
+    };
+  }, [introPlaying]);
+
   if (!enabled) return null;
 
   return (
@@ -71,6 +85,7 @@ export function HeroFx() {
               maxDevicePixelRatio={1.5}
               clickBurst
               intro={!seen}
+              onIntroEnd={() => setHeroIntro(false)}
               interactive={desktop}
             />
           </div>
