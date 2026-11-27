@@ -767,12 +767,12 @@ html.lenis body {
 }
 .hero-layer-skyline {
   z-index: 2;
-  height: 66%;
+  height: 100%;
 }
 .hero-layer-hills {
   z-index: 3;
   display: none;
-  height: 42%;
+  height: 100%;
 }
 .hero-layer-name {
   top: 0;
@@ -786,7 +786,7 @@ html.lenis body {
 }
 .hero-layer-fg {
   z-index: 5;
-  height: 30%;
+  height: 100%;
 }
 @media (min-width: 768px) {
   .hero-layer-hills {

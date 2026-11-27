@@ -247,7 +247,7 @@ html:is([data-intro="skip"], [data-intro="reveal"], [data-intro="done"], [data-f
 .intro-mark path {
   fill: none;
   stroke: #6ee7f2;
-  stroke-width: 1;
+  stroke-width: 1.5;
   stroke-linecap: round;
   stroke-linejoin: round;
 }

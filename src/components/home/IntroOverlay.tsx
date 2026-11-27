@@ -19,8 +19,7 @@ export async function IntroOverlay({ locale }: { locale: Locale }) {
       <div className="intro-veil" data-intro-veil aria-hidden="true">
         {/* "XL" monoline signature: drawn stroke by stroke with DrawSVG. */}
         <svg className="intro-mark" data-intro-mark viewBox="0 0 240 140" width="240" height="140">
-          <path d="M18 34C26 22 38 24 48 36C64 56 82 86 100 112" />
-          <path d="M104 30C86 52 64 84 44 110C38 118 44 122 54 116C80 100 132 40 150 22C156 16 162 20 158 30C146 62 132 96 128 112C126 120 132 122 142 118C170 108 196 104 222 110" />
+          <path id="xl" d="M22,34 C40,52 70,92 96,118 M96,30 C78,54 52,86 30,116 C46,104 70,96 96,112 C112,120 126,108 132,90 L150,26 C146,62 140,94 138,116 C160,112 190,110 218,114" />
         </svg>
       </div>
       <div className="intro-panel" data-intro-panel aria-hidden="true">
