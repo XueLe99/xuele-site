@@ -31,12 +31,15 @@ interface LayerSpec {
   depth: readonly [number, number];
   /** How much of the camera-speed stretch this layer takes (near stars only). */
   stretch: number;
+  /** Hero parallax speed: the layer rises by this fraction of `sky.heroScroll`. */
+  scroll: number;
 }
 
 const LAYERS: readonly LayerSpec[] = [
-  { count: 1200, size: [0.6, 1], opacity: 0.5, parallax: 3, depth: [320, 640], stretch: 0 },
-  { count: 400, size: [1, 1.5], opacity: 0.75, parallax: 7, depth: [170, 320], stretch: 0 },
-  { count: 80, size: [2, 2.5], opacity: 1, parallax: 12, depth: [70, 170], stretch: 1 },
+  // Far layer stays put through the hero; the mid layer drifts up at 0.1x.
+  { count: 1200, size: [0.6, 1], opacity: 0.5, parallax: 3, depth: [320, 640], stretch: 0, scroll: 0 },
+  { count: 400, size: [1, 1.5], opacity: 0.75, parallax: 7, depth: [170, 320], stretch: 0, scroll: 0.1 },
+  { count: 80, size: [2, 2.5], opacity: 1, parallax: 12, depth: [70, 170], stretch: 1, scroll: 0 },
 ];
 
 const CAMERA_PUSH = -40; // act 1: camera z 0 → -40
@@ -66,6 +69,7 @@ const STAR_VERT = /* glsl */ `
   uniform vec2 uDepth;   // near, far
   uniform vec2 uRes;     // css px
   uniform vec2 uOffset;  // mouse parallax, css px
+  uniform float uLift;   // hero scroll parallax, css px (wraps vertically)
   uniform float uOpacity;
   uniform float uBrightness;
   uniform float uStretch;
@@ -87,6 +91,11 @@ const STAR_VERT = /* glsl */ `
     vec2 ndc = position.xy * d0 / depth;
 
     ndc += uOffset * 2.0 / uRes;
+
+    // Hero parallax: on-screen stars rise and wrap around, so none run out.
+    if (uLift > 0.0 && abs(ndc.y) < 1.02) {
+      ndc.y = mod(ndc.y + uLift * 2.0 / uRes.y + 1.02, 2.04) - 1.02;
+    }
 
     // Act 5: drift toward the contact button, each star by a different amount.
     float pull = uGather * (0.2 + 0.4 * fract(aStar.y * 7.31));
@@ -244,6 +253,7 @@ function makeLayer(spec: LayerSpec, index: number) {
       uDepth: { value: new Vector2(spec.depth[0], spec.depth[1]) },
       uRes: { value: new Vector2(1, 1) },
       uOffset: { value: new Vector2() },
+      uLift: { value: 0 },
       uOpacity: { value: spec.opacity },
       uBrightness: { value: 1 },
       uStretch: { value: 1 },
@@ -401,6 +411,7 @@ export function createSkyScene(): SkyScene {
       u.uStretch.value = 1 + (stretch - 1) * spec.stretch;
       u.uGather.value = target ? gather : 0;
       u.uTarget.value.set(tx, ty);
+      u.uLift.value = sky.heroScroll * spec.scroll;
       // Stars shift against the pointer; nearer layers shift more.
       const offset = u.uOffset.value as Vector2;
       offset.x += (-pointer.x * spec.parallax - offset.x) * PARALLAX_LERP;

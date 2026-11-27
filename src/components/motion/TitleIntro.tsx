@@ -46,7 +46,8 @@ export function TitleIntro() {
         band = document.createElement("span");
         band.className = "title-sweep";
         band.setAttribute("aria-hidden", "true");
-        band.textContent = name.textContent;
+        // Same structure as the name (it may hold several lines / spans).
+        band.append(...Array.from(name.childNodes, (n) => n.cloneNode(true)));
         name.append(band);
         gsap.fromTo(
           band,

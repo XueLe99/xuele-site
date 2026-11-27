@@ -12,6 +12,7 @@ export function Act({
   labelledBy,
   className = "",
   backdrop,
+  contained = true,
   children,
 }: {
   name: ActName;
@@ -19,6 +20,8 @@ export function Act({
   className?: string;
   /** Decorative layer behind the content, outside the container (hero particles). */
   backdrop?: ReactNode;
+  /** false: children span the full width and bring their own containers (hero scene). */
+  contained?: boolean;
   children: ReactNode;
 }) {
   const id = `act-${ACTS.indexOf(name)}`;
@@ -31,7 +34,7 @@ export function Act({
       className={`relative ${className}`}
     >
       {backdrop}
-      <div className="container-site">{children}</div>
+      {contained ? <div className="container-site">{children}</div> : children}
     </section>
   );
 }

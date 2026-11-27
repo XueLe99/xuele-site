@@ -15,6 +15,11 @@ export const sky = {
    * layer steps aside so the two layers do not compete. Owned by HeroFx.tsx.
    */
   hero: 0,
+  /**
+   * Hero parallax: px scrolled through the hero scene (0 → its height). Star
+   * layers rise by their own fraction of it. Owned by motion/ParallaxHero.tsx.
+   */
+  heroScroll: 0,
 };
 
 export function resetSky() {

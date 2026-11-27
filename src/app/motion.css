@@ -58,6 +58,9 @@ div.split-line-mask {
   background-clip: text;
   opacity: 0.6;
 }
+.title-sweep * {
+  color: transparent;
+}
 
 /* ------------------------------------------------------------------ */
 /* Effect 4a — MagneticButtons                                          */

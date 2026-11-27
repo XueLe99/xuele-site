@@ -8,6 +8,7 @@ const RoleDecode = dynamic(() => import("./RoleDecode").then((m) => m.RoleDecode
 const ScrollStory = dynamic(() => import("./ScrollStory").then((m) => m.ScrollStory), { ssr: false });
 const SkillTags = dynamic(() => import("./SkillTags").then((m) => m.SkillTags), { ssr: false });
 const ProjectsGallery = dynamic(() => import("./ProjectsGallery").then((m) => m.ProjectsGallery), { ssr: false });
+const ParallaxHero = dynamic(() => import("./ParallaxHero").then((m) => m.ParallaxHero), { ssr: false });
 
 /**
  * Homepage-only GSAP effects. One line per effect: delete the line (and the
@@ -21,6 +22,7 @@ export function HomeMotion() {
       <ScrollStory />
       <SkillTags />
       <ProjectsGallery />
+      <ParallaxHero />
     </>
   );
 }
