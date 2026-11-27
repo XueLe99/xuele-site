@@ -6,6 +6,7 @@ import { gsap, useGSAP } from "./gsap";
 import { introStart, nameIntroDuration, releaseHold } from "./hero-clock";
 import { SPLIT_CLASSES, charLefts } from "./split";
 import { useMotion } from "./useMotion";
+import { useIntroGate } from "@/lib/opening-intro";
 
 gsap.registerPlugin(SplitText);
 
@@ -27,6 +28,7 @@ export function TitleIntro() {
   const { enabled, desktop } = useMotion();
   const startAt = useRef<number | null | undefined>(undefined);
   const played = useRef(false);
+  const gate = useIntroGate();
 
   useGSAP(
     (_, contextSafe) => {
@@ -34,7 +36,11 @@ export function TitleIntro() {
       const tagline = document.querySelector<HTMLElement>("[data-title-tagline]");
       if (!enabled || !name || !contextSafe) return;
 
-      if (startAt.current === undefined) startAt.current = introStart(name);
+      if (startAt.current === undefined) {
+        const at = introStart(name);
+        if (at === "wait") return; // opening intro still up: keep the hold
+        startAt.current = at;
+      }
       const start = startAt.current;
       releaseHold(name, tagline);
       if (start === null || played.current) return;
@@ -114,7 +120,7 @@ export function TitleIntro() {
 
       return () => band?.remove();
     },
-    { dependencies: [enabled, desktop], revertOnUpdate: true },
+    { dependencies: [enabled, desktop, gate], revertOnUpdate: true },
   );
 
   return null;

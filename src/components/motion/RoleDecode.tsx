@@ -6,6 +6,7 @@ import { gsap, useGSAP } from "./gsap";
 import { countChars, introStart, nameIntroDuration, releaseHold } from "./hero-clock";
 import { SPLIT_CLASSES } from "./split";
 import { useMotion } from "./useMotion";
+import { useIntroGate } from "@/lib/opening-intro";
 
 gsap.registerPlugin(SplitText);
 
@@ -27,13 +28,18 @@ export function RoleDecode() {
   const { enabled, desktop } = useMotion();
   const startAt = useRef<number | null | undefined>(undefined);
   const played = useRef(false);
+  const gate = useIntroGate();
 
   useGSAP(
     () => {
       const role = document.querySelector<HTMLElement>("[data-role-decode]");
       if (!enabled || !role) return;
 
-      if (startAt.current === undefined) startAt.current = introStart(role);
+      if (startAt.current === undefined) {
+        const at = introStart(role);
+        if (at === "wait") return; // opening intro still up: keep the hold
+        startAt.current = at;
+      }
       const start = startAt.current;
       releaseHold(role);
       if (start === null || played.current) return;
@@ -88,7 +94,7 @@ export function RoleDecode() {
         );
       });
     },
-    { dependencies: [enabled, desktop], revertOnUpdate: true },
+    { dependencies: [enabled, desktop, gate], revertOnUpdate: true },
   );
 
   return null;
