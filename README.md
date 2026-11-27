@@ -108,7 +108,9 @@ while the tab is hidden.
 Scroll linkage goes through `src/lib/sky-store.ts` (a plain mutable object,
 written by ScrollTrigger, read once per frame): `push` (act 1, camera z
 0 → -40, near stars stretch ≤1.5x), `dim` (act 4, brightness 40%, nebula and
-meteors paused), `gather` (act 5, stars drift toward `[data-contact-target]`).
+meteors paused), `gather` (act 5, stars drift toward `[data-contact-target]`),
+`heroScroll` (hero parallax: the mid star layer rises at 0.1x, the far layer
+stays put; written by `motion/ParallaxHero.tsx`).
 
 ## Scroll storytelling
 
@@ -118,7 +120,7 @@ effects off nothing runs.
 
 | Act | Effect                                                                                          | Tech                          |
 | --- | ----------------------------------------------------------------------------------------------- | ----------------------------- |
-| 0   | Mask-reveal lines (500ms / 80ms stagger), chips fade (40ms stagger); name, tagline and role line: see the motion layer | CSS (`globals.css`) + GSAP    |
+| 0   | Parallax scene (effect 10), opening intro (effect 11); mask-reveal lines (500ms / 80ms stagger), chips fade (40ms stagger); name, tagline and role line: see the motion layer | CSS (`globals.css`) + GSAP    |
 | 1   | Phrases light up muted → text (`--lit`), camera push                                            | ScrollTrigger scrub           |
 | 2   | Constellation lines draw (600ms), stars light accent; chip ↔ star hover highlight               | Motion `inView` + `animate`   |
 | 3   | Star-trail stroke draws with scroll, nodes pop when reached, entries cross-fade (`motion/ScrollStory.tsx`) | ScrollTrigger                 |
@@ -152,11 +154,56 @@ nothing on their own. Exceptions are noted in the last column.
 | 7  | Section heading line masks               | `HeadingMasks.tsx`      | layout        | —                                                                  |
 | 8  | Projects horizontal gallery              | `ProjectsGallery.tsx`   | home page     | —                                                                  |
 | 9  | Lab card → demo Flip                     | `LabFlip.tsx`           | layout        | —                                                                  |
+| 10 | Parallax hero (layer speeds on scroll)   | `ParallaxHero.tsx`      | home page     | optional: `scroll` in `sky-scene.ts` LAYERS / `sky.heroScroll`     |
+| 11 | Opening intro (once per session)         | `OpeningIntro.tsx`      | home page     | `<IntroOverlay />` in `[locale]/page.tsx` + `home/IntroOverlay.tsx`, the gate `<script>` in `[locale]/layout.tsx` (+ `lib/opening-intro-script.ts`), `lib/opening-intro.ts` and its use in `hero-clock.ts` / `TitleIntro.tsx` / `RoleDecode.tsx`, the effect 11 block in `motion.css` |
 
 `data-intro-hold` keeps the hero name, tagline and role line invisible until
 their intro starts. It is a 2.5s CSS animation, not a declaration: if the
 script never runs the text appears by itself, and a `<noscript>` rule disables
-the hold entirely.
+the hold entirely. While the opening intro overlay is pending the hold lasts
+3.4s, and while it plays (`<html data-intro="play" | "reveal">`) OpeningIntro
+owns it; the name intro waits for its release (`src/lib/opening-intro.ts`).
+
+### Parallax hero (effect 10)
+
+`Hero.tsx` renders a 100svh scene that starts under the sticky header. Each
+`[data-parallax]` layer has a speed s = on-screen movement ÷ scroll distance;
+ParallaxHero counter-translates it by `y = scroll × (1 − s)`, scrubbed from
+"top top" to "bottom top" (natural scroll, no pin, no pointer parallax).
+
+| Layer (far → near)           | Desktop | Mobile (<768px, `data-parallax-mobile`) |
+| ---------------------------- | ------- | --------------------------------------- |
+| Far stars (WebGL)            | 0       | — (lite starfield unchanged)            |
+| Mid stars (WebGL)            | 0.1     | —                                       |
+| Antigravity particle ring    | 0.2     | scrolls with the page                   |
+| Skyline `#1B2340`            | 0.25    | 0.125                                   |
+| Hills `#11151F`              | 0.45    | hidden                                  |
+| Name block (WESTLY / 陈学礼 / role) | 0.6 | 0.3                                  |
+| Foreground `#070A12` + 1px rim light | 1 | 1                                     |
+
+The foreground is filled with the page background and continues into
+`.hero-ground` (headline, tagline, chips, buttons), so the scene sinks into
+the page without a seam while the faster foreground climbs over the name.
+Dark theme only: the light theme hides the silhouettes.
+
+**Placeholder art** — `public/parallax/skyline.svg`, `hills.svg`,
+`foreground.svg` are generated placeholders (each < 30KB, 5120 wide,
+`preserveAspectRatio="xMidYMax slice"` so they always span the width). Replace
+them with the final art under the same names; keep the fills, and in
+`foreground.svg` keep a solid bottom edge plus the rim-light stroke along the
+top contour. Layer heights are in `globals.css` (`.hero-layer-*`).
+
+### Opening intro (effect 11)
+
+Once per browser session (`sessionStorage["xl-intro"]`), homepage only:
+`XL` signature draws (DrawSVG, 1.0s) → `#11151F` panel rises (0.45s) →
+"Build · Research · Discover" (0.6s) → hold 0.3s → panel leaves upward (0.5s)
+→ hero layers settle from scale 1.15 (far → near) → name intro. About 2.6s;
+1.2s on mobile without the drawing. Skip: the "跳过 / Skip" button, a click,
+wheel, scroll or Escape. Reduced motion / effects off / already seen: an inline
+script in `<head>` sets `<html data-intro="skip">` before first paint and the
+overlay is never shown. If JS never runs, CSS hides the overlay after 3s; the
+hero always renders underneath, so LCP is not blocked.
 
 Rules the layer follows:
 
@@ -190,6 +237,8 @@ Rules the layer follows:
 | `[data-constellation-line]`, `[data-star]`, `[data-star-chip]` | `Constellation.tsx`, `Skills.tsx`  | Constellation draw + hover        |
 | `[data-timeline-stroke]`, `[data-timeline-node]`, `[data-timeline-item]` | `Experience.tsx`         | Star-trail timeline               |
 | `[data-magnetic]`, `[data-contact-target]`                  | buttons site-wide, `ContactAct.tsx`   | Magnetic buttons, star gathering  |
+| `[data-hero-scene]`, `[data-parallax]`, `[data-parallax-mobile]`, `[data-intro-layer]` | `Hero.tsx` | Parallax hero, opening intro layer settle |
+| `[data-opening-intro]` (`data-intro-veil` / `-mark` / `-panel` / `-tagline` / `-skip`), `<html data-intro>` | `IntroOverlay.tsx`, gate script | Opening intro |
 | `[data-demo-slot="low-light" \| "kernel" \| "pathfinding"]` (`data-demo-state` = `static` / `loading` / `live`) | `src/components/lab/DemoSlot.tsx` | Sandpack demos |
 
 Everything is visible and complete without these enhancements.
