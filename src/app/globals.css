@@ -690,6 +690,41 @@
   );
 }
 
+/* ------------------------------------------------------------------ */
+/* Section backdrop (home page): one fixed layer above the starfield,  */
+/* below all content. <SectionBackdrop /> drives the vars per section; */
+/* without it the layer stays invisible. Dark theme only.               */
+/* ------------------------------------------------------------------ */
+.section-bg {
+  --bg: #070a12;
+  --glow-color: #6ee7f2;
+  --glow-a: 0%;
+  --glow-x: 18%;
+  --glow-y: 18%;
+  --glow-dx: 0%;
+  --glow-dy: 0%;
+  --glow-r: 600px;
+  --glow: radial-gradient(
+    circle var(--glow-r) at calc(var(--glow-x) + var(--glow-dx)) calc(var(--glow-y) + var(--glow-dy)),
+    color-mix(in srgb, var(--glow-color) var(--glow-a), transparent),
+    transparent
+  );
+  position: fixed;
+  inset: 0;
+  z-index: -9;
+  pointer-events: none;
+  opacity: var(--sb-opacity, 0);
+  background: var(--glow), var(--bg);
+}
+@media (max-width: 767.98px) {
+  .section-bg {
+    --glow-r: 300px;
+  }
+}
+.light .section-bg {
+  display: none;
+}
+
 .light .bg-poster-gradients,
 .light .bg-poster-stars {
   display: none;

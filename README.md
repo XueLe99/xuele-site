@@ -156,6 +156,7 @@ nothing on their own. Exceptions are noted in the last column.
 | 9  | Lab card → demo Flip                     | `LabFlip.tsx`           | layout        | —                                                                  |
 | 10 | Parallax hero (layer speeds on scroll)   | `ParallaxHero.tsx`      | home page     | optional: `scroll` in `sky-scene.ts` LAYERS / `sky.heroScroll`     |
 | 11 | Opening intro (once per session)         | `OpeningIntro.tsx`      | home page     | `<IntroOverlay />` in `[locale]/page.tsx` + `home/IntroOverlay.tsx`, the gate `<script>` in `[locale]/layout.tsx` (+ `lib/opening-intro-script.ts`), `lib/opening-intro.ts` and its use in `hero-clock.ts` / `TitleIntro.tsx` / `RoleDecode.tsx`, the effect 11 block in `motion.css` |
+| 12 | Scroll-driven section backgrounds       | `SectionBackdrop.tsx`   | home page     | the `[data-section-bg]` div in `[locale]/page.tsx`, the "Section backdrop" block in `globals.css` |
 
 `data-intro-hold` keeps the hero name, tagline and role line invisible until
 their intro starts. It is a 2.5s CSS animation, not a declaration: if the
@@ -192,6 +193,20 @@ Dark theme only: the light theme hides the silhouettes.
 them with the final art under the same names; keep the fills, and in
 `foreground.svg` keep a solid bottom edge plus the rim-light stroke along the
 top contour. Layer heights are in `globals.css` (`.hero-layer-*`).
+
+### Section backgrounds (effect 12)
+
+A fixed `.section-bg` layer (z -9: above the starfield, below all content) is
+painted from `--bg` plus `--glow`, a ~600px radial glow (300px below 768px) at
+12% opacity. Per section, the colour and glow scrub from the previous
+section's values to this one's between "top 60%" and "top 20%" (`scrub: 1`,
+ease "none"), and the glow drifts a few percent while the section is in view.
+The layer is invisible over the hero, so the sky stays visible behind the
+silhouettes, and fades in as 我是谁 arrives on the hero foreground colour
+`#070A12`, so there is no seam. Values are in `LOOKS` in `SectionBackdrop.tsx`.
+With reduced motion or effects off the colours switch instantly when a section
+reaches 40% of the viewport. Dark theme only: the light theme hides the
+layer. Once the layer is fully visible it covers the starfield.
 
 ### Opening intro (effect 11)
 

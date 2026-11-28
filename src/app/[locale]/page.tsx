@@ -33,6 +33,8 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
     <>
       {/* Opening intro overlay (once per session), animated by <OpeningIntro />. */}
       <IntroOverlay locale={locale} />
+      {/* Fixed per-section background, driven by <SectionBackdrop />; invisible without it. */}
+      <div className="section-bg" aria-hidden="true" data-section-bg />
       {/* Acts 0–5: server-rendered text; <HomeFx /> layers the scroll animation on top. */}
       <Hero locale={locale} />
       <WhoIAm locale={locale} />

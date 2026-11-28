@@ -10,6 +10,7 @@ const ScrollStory = dynamic(() => import("./ScrollStory").then((m) => m.ScrollSt
 const SkillTags = dynamic(() => import("./SkillTags").then((m) => m.SkillTags), { ssr: false });
 const ProjectsGallery = dynamic(() => import("./ProjectsGallery").then((m) => m.ProjectsGallery), { ssr: false });
 const ParallaxHero = dynamic(() => import("./ParallaxHero").then((m) => m.ParallaxHero), { ssr: false });
+const SectionBackdrop = dynamic(() => import("./SectionBackdrop").then((m) => m.SectionBackdrop), { ssr: false });
 
 /**
  * Homepage-only GSAP effects. One line per effect: delete the line (and the
@@ -25,6 +26,7 @@ export function HomeMotion() {
       <SkillTags />
       <ProjectsGallery />
       <ParallaxHero />
+      <SectionBackdrop />
     </>
   );
 }
