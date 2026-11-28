@@ -44,6 +44,9 @@
     "resumeEn": "Résumé in English (PDF)",
     "present": "Present"
   },
+  "intro": {
+    "skip": "Skip"
+  },
   "hero": {
     "name": "Westly Tan Xue Le",
     "altName": "陈学礼",

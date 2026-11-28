@@ -11,6 +11,7 @@ import { SITE_URL, THEME_COLOR } from "@/config";
 import { HTML_LANG, routing } from "@/i18n/routing";
 import { resolveLocale } from "@/lib/locale";
 import { noFlashScript } from "@/lib/no-flash";
+import { introGateScript } from "@/lib/opening-intro-script";
 import { pageMetadata } from "@/lib/seo";
 import { fontVariables } from "../fonts";
 import "../globals.css";
@@ -67,6 +68,8 @@ export default async function LocaleLayout({
           suppressHydrationWarning
         />
         <script dangerouslySetInnerHTML={{ __html: noFlashScript }} />
+        {/* Opening intro: decides pre-paint whether the overlay shows (after no-flash). */}
+        <script dangerouslySetInnerHTML={{ __html: introGateScript }} />
         {/* No JS: nothing will run the hero intro, so do not hold it back. */}
         <noscript>
           <style>{"[data-intro-hold]{animation:none!important}"}</style>

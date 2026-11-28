@@ -44,6 +44,9 @@
     "resumeEn": "英文简历（PDF）",
     "present": "至今"
   },
+  "intro": {
+    "skip": "跳过"
+  },
   "hero": {
     "name": "陈学礼",
     "altName": "Westly Tan Xue Le",

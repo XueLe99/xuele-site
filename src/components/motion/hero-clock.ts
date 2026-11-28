@@ -6,6 +6,8 @@
  * currentTime is therefore "time since first paint" — on a hard load and after
  * a client-side navigation alike — without any coupling between the effects.
  */
+import { introGate, introReleasedAt } from "@/lib/opening-intro";
+
 const HOLD = "intro-hold";
 
 /** Delay between first paint and the first character of the name. */
@@ -14,8 +16,13 @@ const NAME_DELAY_MS = 600;
 /**
  * performance.now() timestamp at which the name intro starts, or null when the
  * hold is already over (the text is visible; do not animate it away again).
+ * "wait" while the opening intro overlay is still pending (lib/opening-intro):
+ * the name must not play hidden under it. Once released, its timestamp wins.
  */
-export function introStart(el: Element): number | null {
+export function introStart(el: Element): number | null | "wait" {
+  const gate = introGate();
+  if (gate === "pending") return "wait";
+  if (gate === "open") return introReleasedAt();
   const hold = el
     .getAnimations()
     .find((a) => a instanceof CSSAnimation && a.animationName === HOLD);

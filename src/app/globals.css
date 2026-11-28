@@ -640,28 +640,25 @@
     opacity: 0;
   }
 }
-/* Hero: above the fixed starfield (z -10), below the content; also runs under
-   the translucent header. Fades out toward the next act. */
+/* Hero: a layer of the parallax scene (see "Act 0 — parallax scene" below),
+   above the fixed starfield (z -10). */
 .hero-fx {
   position: absolute;
-  inset: calc(-1 * var(--header-h)) 0 0;
-  z-index: -1;
+  inset: 0;
   overflow: hidden;
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent);
-  mask-image: linear-gradient(to bottom, #000 78%, transparent);
 }
 .hero-fx-canvas {
   position: absolute;
   inset: 0;
   animation: fx-layer-in 600ms ease-out;
 }
-/* Contrast: soft dark radial vignette behind the name / text column. */
+/* Contrast: soft dark radial vignette behind the centred name. */
 .hero-fx-vignette {
   position: absolute;
   inset: 0;
   background: radial-gradient(
-    ellipse min(720px, 90vw) 62% at max(34%, calc(50% - 220px)) 48%,
+    ellipse min(820px, 95vw) 40% at 50% 58%,
     rgb(7 10 18 / 0.62),
     rgb(7 10 18 / 0.3) 55%,
     transparent 78%
@@ -693,6 +690,41 @@
   );
 }
 
+/* ------------------------------------------------------------------ */
+/* Section backdrop (home page): one fixed layer above the starfield,  */
+/* below all content. <SectionBackdrop /> drives the vars per section; */
+/* without it the layer stays invisible. Dark theme only.               */
+/* ------------------------------------------------------------------ */
+.section-bg {
+  --bg: #070a12;
+  --glow-color: #6ee7f2;
+  --glow-a: 0%;
+  --glow-x: 18%;
+  --glow-y: 18%;
+  --glow-dx: 0%;
+  --glow-dy: 0%;
+  --glow-r: 600px;
+  --glow: radial-gradient(
+    circle var(--glow-r) at calc(var(--glow-x) + var(--glow-dx)) calc(var(--glow-y) + var(--glow-dy)),
+    color-mix(in srgb, var(--glow-color) var(--glow-a), transparent),
+    transparent
+  );
+  position: fixed;
+  inset: 0;
+  z-index: -9;
+  pointer-events: none;
+  opacity: var(--sb-opacity, 0);
+  background: var(--glow), var(--bg);
+}
+@media (max-width: 767.98px) {
+  .section-bg {
+    --glow-r: 300px;
+  }
+}
+.light .section-bg {
+  display: none;
+}
+
 .light .bg-poster-gradients,
 .light .bg-poster-stars {
   display: none;
@@ -718,6 +750,123 @@ html.lenis body {
 }
 .lenis.lenis-smooth iframe {
   pointer-events: none;
+}
+
+/*
+ * Act 0 — parallax scene. Static layout = the final state: every layer sits at
+ * its resting position and <ParallaxHero /> only adds scroll-scrubbed
+ * transforms. Far → near (z): particles, skyline, hills, name, foreground.
+ * The foreground is filled with the page background and continues into
+ * `.hero-ground`, so the scene sinks into the page without a seam.
+ */
+.hero-scene {
+  position: relative;
+  height: 100svh;
+  /* Start under the sticky header: the scene fills the first screen. */
+  margin-top: calc(-1 * var(--header-h));
+  overflow: clip;
+  isolation: isolate;
+  container-type: size;
+}
+/* Horizon glow behind the silhouettes, so the page-coloured foreground reads. */
+.hero-scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(27 35 64 / 0.5), rgb(27 35 64 / 0.18) 40%, transparent 70%);
+  pointer-events: none;
+}
+.light .hero-scene::before {
+  display: none;
+}
+.hero-layer {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+.hero-layer-inner {
+  position: absolute;
+  inset: 0;
+}
+.hero-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 100%;
+  user-select: none;
+}
+.hero-layer-fx {
+  top: 0;
+  z-index: 1;
+}
+.hero-layer-skyline {
+  z-index: 2;
+  height: 100%;
+}
+.hero-layer-hills {
+  z-index: 3;
+  display: none;
+  height: 100%;
+}
+.hero-layer-name {
+  top: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  /* Name rests just above the tree line, so the foreground climbs over it. */
+  padding-bottom: 29cqh;
+  pointer-events: auto;
+}
+.hero-layer-fg {
+  z-index: 5;
+  height: 100%;
+}
+@media (min-width: 768px) {
+  .hero-layer-hills {
+    display: block;
+  }
+}
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  translate: -50% 0;
+  pointer-events: auto;
+}
+.hero-name {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  line-height: 1;
+}
+.hero-name-en {
+  display: block;
+  font-size: clamp(64px, 12vw, 180px);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.hero-name-zh {
+  display: block;
+  margin-top: 16px;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.3em;
+  /* Optical centring: letter-spacing adds space after the last glyph too. */
+  margin-inline-start: 0.3em;
+  color: var(--muted);
+}
+/* The ground below the scene: solid page colour, fading to the star sky. */
+.hero-ground {
+  position: relative;
+  background: linear-gradient(to bottom, var(--bg) 0, var(--bg) 45%, transparent);
+}
+/* Light theme: no night scenery (like the starfield and particles). */
+.light .hero-art {
+  display: none;
 }
 
 /*
